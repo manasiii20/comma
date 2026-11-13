@@ -1,0 +1,54 @@
+.avatar {
+  position: relative;
+  display: block;
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: 999px;
+}
+
+.avatar--photo {
+  object-fit: cover;
+}
+
+.avatar--shreya {
+  background: #ffd9a2;
+}
+
+.avatar--dhruv {
+  background: #b3c9ec;
+}
+
+.avatar--krisha {
+  background: #e1ffcf;
+}
+
+.avatar__fill {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar--shreya .avatar__fill {
+  top: 7.81%;
+}
+
+.avatar--dhruv .avatar__fill {
+  top: 2.34%;
+}
+
+.avatar__crop {
+  position: absolute;
+  inset: 17.97% 0 14.45% 0;
+  overflow: hidden;
+}
+
+.avatar__crop img {
+  position: absolute;
+  left: 0;
+  top: -47.98%;
+  width: 100%;
+  height: 147.98%;
+  max-width: none;
+}
