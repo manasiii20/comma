@@ -1,18 +1,18 @@
 ﻿/* ---------- Shell ---------- */
+/* Desktop (>=1024px): design units; useFitToWindow zooms this to the window and sizes it to fill it. */
 .app {
-  --pad-x: clamp(16px, 2.6vw, 50px);
-  --pad-y: clamp(16px, 4.63vh, 50px);
-  --col-gap: clamp(20px, 3.07vw, 59px);
-  --gap: clamp(16px, 1.56vw, 30px);
-  --card-px: clamp(20px, 2.3vw, 44px);
+  --pad-x: 50px;
+  --pad-y: 50px;
+  --col-gap: 59px;
+  --gap: 30px;
+  --card-px: 44px;
 
   box-sizing: border-box;
-  min-height: 100dvh;
   padding: var(--pad-y) var(--pad-x);
   display: grid;
-  grid-template-columns: 100px minmax(0, 1fr) clamp(320px, 20vw, 385px);
+  grid-template-columns: 100px minmax(0, 1fr) 385px;
   column-gap: var(--col-gap);
-  align-items: start;
+  overflow: hidden;
   background: #262626;
   color: #f2f2f2;
   font-family: 'Garet', sans-serif;
@@ -74,10 +74,7 @@
 /* ---------- Sidebar ---------- */
 .sidebar {
   box-sizing: border-box;
-  position: sticky;
-  top: var(--pad-y);
-  height: calc(100dvh - 2 * var(--pad-y));
-  min-height: 560px;
+  min-height: 0;
   padding: 49px 0 46px;
   display: flex;
   flex-direction: column;
@@ -92,7 +89,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: clamp(32px, 9.5vh, 103px);
+  gap: var(--sidebar-top-gap, 103px);
 }
 
 .sidebar__logo {
@@ -117,7 +114,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: clamp(24px, 3.6vh, 39px);
+  gap: var(--nav-gap, 39px);
 }
 
 .sidebar__nav-links {
@@ -125,7 +122,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: clamp(24px, 3.6vh, 39px);
+  gap: var(--nav-gap, 39px);
 }
 
 .nav-item {
@@ -166,8 +163,8 @@
 .main {
   container: main / inline-size;
   min-width: 0;
-  min-height: calc(100dvh - 2 * var(--pad-y));
-  padding-top: clamp(0px, 3.9vh, 42px);
+  min-height: 0;
+  padding-top: var(--main-top, 42px);
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -178,7 +175,7 @@
   align-items: flex-end;
   justify-content: space-between;
   gap: 24px;
-  margin-bottom: clamp(20px, 4.8vh, 52px);
+  margin-bottom: var(--header-gap, 52px);
 }
 
 .header__title {
@@ -425,7 +422,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: clamp(16px, 2vw, 40px);
+  gap: 40px;
 }
 
 .overview__desc {
@@ -646,7 +643,7 @@
 .checklist,
 .timeline,
 .team {
-  min-height: clamp(360px, 40.5vh, 437px);
+  min-height: var(--row2-min, 437px);
   padding: 30px var(--card-px) 43px;
 }
 
@@ -928,10 +925,7 @@
 /* ---------- Profile panel ---------- */
 .profile {
   box-sizing: border-box;
-  position: sticky;
-  top: var(--pad-y);
-  height: calc(100dvh - 2 * var(--pad-y));
-  min-height: 560px;
+  min-height: 0;
   overflow-y: auto;
   scrollbar-width: none;
   padding: 45px 22px 22px;
@@ -1202,32 +1196,47 @@
   }
 }
 
-/* ---------- Laptop / tablet: profile moves below the dashboard ---------- */
-@media (max-width: 1679px) {
+/* ---------- Tablet (<1024px): unscaled fluid layout, profile moves below the dashboard ---------- */
+@media (max-width: 1023px) {
   .app {
+    --pad-x: clamp(16px, 2.6vw, 50px);
+    --pad-y: clamp(16px, 4.63vh, 50px);
+    --col-gap: clamp(20px, 3.07vw, 59px);
+    --gap: clamp(16px, 1.56vw, 30px);
+    --card-px: clamp(20px, 2.3vw, 44px);
+    --sidebar-top-gap: clamp(32px, 9.5vh, 103px);
+    --nav-gap: clamp(24px, 3.6vh, 39px);
+    --main-top: clamp(0px, 3.9vh, 42px);
+    --header-gap: clamp(20px, 4.8vh, 52px);
+    --row2-min: clamp(360px, 40.5vh, 437px);
+
+    min-height: 100dvh;
+    overflow: visible;
     grid-template-columns: 100px minmax(0, 1fr);
+    align-items: start;
     row-gap: var(--gap);
   }
 
   .sidebar {
     grid-row: 1 / span 2;
+    position: sticky;
+    top: var(--pad-y);
+    height: calc(100dvh - 2 * var(--pad-y));
+    min-height: 560px;
+  }
+
+  .main {
+    min-height: calc(100dvh - 2 * var(--pad-y));
   }
 
   .profile {
     grid-column: 2;
-    position: static;
-    height: auto;
-    min-height: 0;
     overflow: visible;
     padding: 28px;
     display: grid;
-    grid-template-columns: minmax(180px, 0.6fr) 1fr 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     align-items: stretch;
     gap: 28px;
-  }
-
-  .profile__head {
-    justify-content: center;
   }
 
   .side-card + .side-card {
@@ -1241,12 +1250,6 @@
 
   .standard__note {
     margin-top: auto;
-  }
-}
-
-@media (max-width: 1099px) {
-  .profile {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .profile__head {

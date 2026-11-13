@@ -2,6 +2,7 @@ import { useRef, useState, type CSSProperties, type KeyboardEvent } from 'react'
 import { Avatar } from '../components/Avatar'
 import { Icon } from '../components/Icon'
 import { usePersistentState } from '../hooks/usePersistentState'
+import { useFitToWindow } from '../hooks/useFitToWindow'
 import {
   initialActivity,
   initialDescription,
@@ -98,6 +99,7 @@ export default function ProjectScreen() {
   const [messageDraft, setMessageDraft] = useState('')
   const [lockNudge, setLockNudge] = useState(false)
   const taskInputRef = useRef<HTMLInputElement>(null)
+  const fitStyle = useFitToWindow()
 
   const logActivity = (title: string, detail: string) =>
     setActivity((prev) => [{ id: newId(), avatar: 'aanya' as const, title, detail }, ...prev].slice(0, 20))
@@ -171,7 +173,7 @@ export default function ProjectScreen() {
   }
 
   return (
-    <div className="app">
+    <div className={`app ${fitStyle ? 'app--fit' : ''}`} style={fitStyle}>
       {/* Sidebar */}
       <aside className="sidebar">
         <div className="sidebar__top">
