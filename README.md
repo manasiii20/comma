@@ -13,10 +13,8 @@ Then open http://localhost:5173.
 
 ## Fonts
 
-The UI uses **Garet Book** and **Gilroy** (Regular, Medium), which are licensed fonts and are not committed to this repo. Place these files in `public/fonts/` to render the design as intended:
+The UI uses **Garet Book** and **Gilroy** (Regular, Medium). They live in `public/fonts/` as `.woff2` files and are loaded from `src/index.css`.
 
-- `Garet-Book.otf`
-- `Gilroy-Regular.ttf`
-- `Gilroy-Medium.ttf`
+## Live site
 
-Without them the app falls back to the system sans-serif.
+Every push to `main` deploys to https://manasiii20.github.io/comma/
