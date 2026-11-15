@@ -1,4 +1,4 @@
-import { useRef, useState, type CSSProperties, type KeyboardEvent } from 'react'
+﻿import { useRef, useState, type CSSProperties, type KeyboardEvent } from 'react'
 import { Avatar } from '../components/Avatar'
 import { Icon } from '../components/Icon'
 import { usePersistentState } from '../hooks/usePersistentState'
@@ -177,9 +177,9 @@ export default function ProjectScreen() {
       {/* Sidebar */}
       <aside className="sidebar">
         <div className="sidebar__top">
-          <button className="sidebar__logo" aria-label="Queue2 home">
+          <a className="sidebar__logo" href="#/" aria-label="All projects">
             <img src={logo} alt="" />
-          </button>
+          </a>
           <nav className="sidebar__nav">
             <button className="nav-item nav-item--active" aria-label="Overview" aria-current="page">
               <Icon src={navBook} width={60} />

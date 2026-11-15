@@ -1,0 +1,15 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="13.75" height="13.75" viewBox="0 0 13.75 13.75" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="Group 238">
+<path id="Vector" d="M13.375 6.875C13.375 10.4649 10.4649 13.375 6.875 13.375C3.28515 13.375 0.375 10.4649 0.375 6.875C0.375 3.28515 3.28515 0.375 6.875 0.375C10.4649 0.375 13.375 3.28515 13.375 6.875Z" stroke-width="0.75" stroke="#8C8C8C"/>
+<g id="Vector_2">
+<use xlink:href="#stroke0_0_8" fill="#8C8C8C"/>
+<mask id="stroke1_0_8" fill="white">
+<use xlink:href="#stroke0_0_8"/>
+</mask>
+<path d="M6.875 2C8.16791 2 9.40792 2.51362 10.3221 3.42786C11.2364 4.34209 11.75 5.58209 11.75 6.875C11.75 8.16791 11.2364 9.40792 10.3221 10.3221C9.40792 11.2364 8.16791 11.75 6.875 11.75V2Z" stroke-width="2" stroke="#8C8C8C" mask="url(#stroke1_0_8)"/>
+</g>
+</g>
+<defs>
+<path id="stroke0_0_8" d="M6.875 2C8.16791 2 9.40792 2.51362 10.3221 3.42786C11.2364 4.34209 11.75 5.58209 11.75 6.875C11.75 8.16791 11.2364 9.40792 10.3221 10.3221C9.40792 11.2364 8.16791 11.75 6.875 11.75V2Z"/>
+</defs>
+</svg>
