@@ -15,7 +15,7 @@ Then open http://localhost:5173.
 
 The UI uses **Garet Book** and **Gilroy** (Regular, Medium), which are licensed fonts and are not committed to this repo. Place these files in `public/fonts/` to render the design as intended:
 
-- `Garet-Book.ttf`
+- `Garet-Book.otf`
 - `Gilroy-Regular.ttf`
 - `Gilroy-Medium.ttf`
 

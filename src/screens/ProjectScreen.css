@@ -187,8 +187,9 @@
 }
 
 .header__title h1 {
+  height: 65px;
   font-size: 50px;
-  line-height: 65px;
+  line-height: normal;
   color: #f2f2f2;
 }
 
@@ -1148,6 +1149,7 @@
   }
 
   .header__title h1 {
+    height: auto;
     font-size: 38px;
     line-height: 48px;
   }
