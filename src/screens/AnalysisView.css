@@ -248,7 +248,7 @@
 .card.work {
   flex: 1;
   min-height: 0;
-  padding: 32px 44px 30px;
+  padding: 28px 44px 26px;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   column-gap: 98px;
@@ -301,7 +301,7 @@
   padding: 0 4px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: #444 transparent;
@@ -316,8 +316,8 @@
 .work-item {
   box-sizing: border-box;
   flex-shrink: 0;
-  min-height: 90px;
-  padding: 10px 19px;
+  min-height: 0;
+  padding: 10px 20px 12px;
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -330,29 +330,20 @@
 .work-item h3 {
   margin: 0;
   font-weight: 400;
-  font-size: 16px;
-  line-height: 20px;
+  font-size: 18px;
+  line-height: 24px;
   color: #d9d9d9;
 }
 
-.work-item__row {
+.work-item__head {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
 }
 
-.work-item__info {
+.work-item__head h3 {
   min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.work-item__info p {
-  font-size: 12px;
-  line-height: 16px;
-  color: #999;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -361,18 +352,18 @@
 .work-item__tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 8px;
 }
 
 .tag {
-  height: 22px;
-  padding: 0 10px;
+  height: 28px;
+  padding: 0 12px;
   display: inline-grid;
   place-items: center;
   border-radius: 18px;
   font-family: 'Gilroy', sans-serif;
-  font-size: 12px;
-  line-height: 16px;
+  font-size: 14px;
+  line-height: 20px;
   white-space: nowrap;
 }
 

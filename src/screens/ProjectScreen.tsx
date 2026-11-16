@@ -65,9 +65,9 @@ const timelineBars: {
   avatars: AvatarKey[]
 }[] = [
   { name: 'Problem Framing', progress: 100, designLeft: 43, designWidth: 114, designFill: 114, top: 41, track: 'rgba(100,196,226,0.88)', fill: 'rgba(100,196,226,0.88)', pill: '#b2e3f3', pillWidth: 33, avatarGap: 14, avatars: ['shreya', 'aanya'] },
-  { name: 'Research Models', progress: 95, designLeft: 141, designWidth: 134, designFill: 117, top: 84, track: 'rgba(229,195,249,0.54)', fill: 'rgba(229,195,249,0.81)', pill: '#f8edfe', pillWidth: 33, avatarGap: 23, avatars: ['shreya', 'krisha'] },
-  { name: 'Solution Ideation', progress: 65, designLeft: 228, designWidth: 118, designFill: 80, top: 127, track: 'rgba(241,165,165,0.62)', fill: 'rgba(241,165,165,0.88)', pill: '#ffdbdb', pillWidth: 33, avatarGap: 7, avatars: ['dhruv'] },
-  { name: 'Prototyping', progress: 15, designLeft: 322, designWidth: 91, designFill: 38, top: 170, track: 'rgba(249,243,151,0.6)', fill: '#efea92', pill: '#fffcca', pillWidth: 25, avatarGap: 0, avatars: [] },
+  { name: 'Research Models', progress: 95, designLeft: 141, designWidth: 134, designFill: 117, top: 93, track: 'rgba(229,195,249,0.54)', fill: 'rgba(229,195,249,0.81)', pill: '#f8edfe', pillWidth: 33, avatarGap: 23, avatars: ['shreya', 'krisha'] },
+  { name: 'Solution Ideation', progress: 65, designLeft: 228, designWidth: 118, designFill: 80, top: 145, track: 'rgba(241,165,165,0.62)', fill: 'rgba(241,165,165,0.88)', pill: '#ffdbdb', pillWidth: 33, avatarGap: 7, avatars: ['dhruv'] },
+  { name: 'Prototyping', progress: 15, designLeft: 322, designWidth: 91, designFill: 38, top: 197, track: 'rgba(249,243,151,0.6)', fill: '#efea92', pill: '#fffcca', pillWidth: 25, avatarGap: 0, avatars: [] },
 ]
 
 const legend = [
@@ -361,23 +361,31 @@ export default function ProjectScreen({ view = 'overview' }: { view?: ProjectVie
                 <div className="panel quick-actions" role="group" aria-label="Quick actions">
                   <div className="quick-actions__row">
                     <a className="qa" href={project.gameUrl} target="_blank" rel="noreferrer" data-tip="Take a break" data-tip-detail="Opens a quick game in a new tab">
-                      <span className="qa__game">
-                        <img src={qaGame} alt="" />
-                        <img className="qa__play" src={playTriangle} alt="" />
+                      <span className="qa__icon">
+                        <span className="qa__game">
+                          <img src={qaGame} alt="" />
+                          <img className="qa__play" src={playTriangle} alt="" />
+                        </span>
                       </span>
                       Game
                     </a>
                     <button className="qa" onClick={startAddingTask} data-tip="New task" data-tip-detail="Add a task to the checklist">
-                      <Icon src={qaTask} width={18} />
+                      <span className="qa__icon">
+                        <Icon src={qaTask} width={18} />
+                      </span>
                       Task
                     </button>
                     <a className="qa" href={viewHref('analysis')} data-tip="Analysis" data-tip-detail="Reflection, stats and task line-up">
-                      <Icon src={qaAnalysis} width={18} />
+                      <span className="qa__icon">
+                        <Icon src={qaAnalysis} width={18} />
+                      </span>
                       Analysis
                     </a>
                     <button className="qa" onClick={exportProject} data-tip="Export" data-tip-detail="Download this project as a JSON file">
-                      <span className="qa__export">
-                        <img src={qaExport} alt="" />
+                      <span className="qa__icon">
+                        <span className="qa__export">
+                          <img src={qaExport} alt="" />
+                        </span>
                       </span>
                       Export
                     </button>

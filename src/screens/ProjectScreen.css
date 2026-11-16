@@ -637,7 +637,7 @@
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   flex: 1;
-  gap: 6px;
+  gap: 8px;
 }
 
 .qa {
@@ -649,20 +649,30 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
-  border: 0.5px solid #292929;
-  border-radius: 6px;
-  background: rgba(64, 64, 64, 0.4);
+  gap: 8px;
+  border: none;
+  box-shadow: inset 0 0 0 1px #383838;
+  border-radius: 10px;
+  background: #2e2e2e;
   font-family: 'Gilroy', sans-serif;
   font-size: 14px;
   letter-spacing: 0;
   line-height: 16px;
   color: #d9d9d9;
-  transition: background 0.15s;
+  transition: background 0.15s, box-shadow 0.15s;
 }
 
 .qa:hover {
-  background: rgba(90, 90, 90, 0.55);
+  background: #363636;
+  box-shadow: inset 0 0 0 1px #4a4a4a;
+}
+
+/* All four icons share one slot, drawn larger (zoom keeps the SVGs crisp). */
+.qa__icon {
+  display: grid;
+  place-items: center;
+  zoom: 1.45;
+  line-height: 0;
 }
 
 .qa__game,
@@ -852,7 +862,7 @@
   --track-w: calc(100% - 23px);
   position: relative;
   flex: 1;
-  min-height: 253px;
+  min-height: 232px;
   margin-top: 21px;
 }
 
@@ -939,13 +949,13 @@
 
 .timeline__legend {
   box-sizing: border-box;
-  margin-top: 7px;
+  margin-top: 10px;
   min-height: 0;
-  padding: 6px 8px;
+  padding: 10px 14px;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  column-gap: 5px;
-  row-gap: 4px;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  column-gap: 16px;
+  row-gap: 8px;
   box-shadow: inset 0 0 0 0.75px #333;
   border-radius: 10px;
   background: #262626;
@@ -953,22 +963,23 @@
 
 .timeline__legend span {
   min-width: 0;
-  height: 16px;
+  height: 20px;
   display: flex;
   align-items: center;
-  gap: 7px;
-  font-size: 13px;
-  line-height: normal;
-  color: #bfbfbf;
+  gap: 10px;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.01em;
+  color: #d0d0d0;
   white-space: nowrap;
 }
 
 .timeline__legend i {
   box-sizing: border-box;
-  width: 10px;
-  height: 10px;
+  width: 12px;
+  height: 12px;
   flex-shrink: 0;
-  border-radius: 2px;
+  border-radius: 3px;
 }
 
 /* Team */
@@ -1187,6 +1198,7 @@
   flex: 1;
   min-width: 0;
   font-size: 14px;
+  padding-top: 3px;
   color: #e6e6e6;
 }
 
@@ -1196,7 +1208,7 @@
 
 .standard {
   min-height: 305px;
-  padding: 28px 21px 34px 25px;
+  padding: 28px 25px 30px;
   gap: 16px;
 }
 
@@ -1254,10 +1266,10 @@
 }
 
 .standard__note {
-  font-size: 13px;
+  font-size: 14px;
   letter-spacing: 0;
-  line-height: normal;
-  color: #d9d9d9;
+  line-height: 21px;
+  color: #e6e6e6;
 }
 
 /* ---------- Main-area breakpoints (by available width) ---------- */
