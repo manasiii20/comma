@@ -1,6 +1,7 @@
 import { useState, type ReactNode } from 'react'
 import { Avatar } from '../components/Avatar'
 import { Icon } from '../components/Icon'
+import { useFitToWindow } from '../hooks/useFitToWindow'
 import { memberNames, projects, type ProjectSummary } from '../data/projects'
 import logo from '../assets/figma/logo.png'
 import searchIcon from '../assets/figma/home/search.svg'
@@ -21,12 +22,13 @@ const stageIcons = { Testing: stageTesting, Research: stageResearch }
 const flagIcons = { thin: flagThin, bold: flagBold }
 
 export default function HomeScreen() {
+  const fitStyle = useFitToWindow()
   const [query, setQuery] = useState('')
   const q = query.trim().toLowerCase()
   const visible = projects.filter((p) => p.name.toLowerCase().includes(q))
 
   return (
-    <div className="home">
+    <div className={`home${fitStyle ? ' home--fit' : ''}`} style={fitStyle}>
       <header className="home__brand">
         <span className="home__logo">
           <img src={logo} alt="" />
@@ -49,7 +51,7 @@ export default function HomeScreen() {
           />
         </label>
         <button className="home-filter" type="button">
-          <img src={filterIcon} alt="" width={40} height={40} />
+          <img src={filterIcon} alt="" width={41} height={41} />
           <span>All Status</span>
         </button>
         <button className="home-filter" type="button">
@@ -65,7 +67,7 @@ export default function HomeScreen() {
           <svg className="add-card__border" aria-hidden="true">
             <rect />
           </svg>
-          <img src={addPlus} alt="" width={40} height={40} />
+          <img src={addPlus} alt="" width={38} height={38} />
           <span>Add Project</span>
         </button>
         {visible.map((p) => (
@@ -103,7 +105,7 @@ function ProjectCard({ project: p }: { project: ProjectSummary }) {
             </span>
             <span className="pcard__stack">
               {p.members.map((m) => (
-                <Avatar key={m} who={m} size={32} />
+                <Avatar key={m} who={m} size={37} />
               ))}
             </span>
           </span>
@@ -112,7 +114,7 @@ function ProjectCard({ project: p }: { project: ProjectSummary }) {
         <span className="pcard__fold pcard__fold--detail">
           <span className="pcard__detail">
             <span className="pcard__progress">
-              <img src={checkCircle} alt="" width={20} height={20} />
+              <img src={checkCircle} alt="" width={24} height={24} />
               <span className="pcard__count">
                 {doneCount} of {p.steps.length} steps
               </span>
@@ -123,7 +125,7 @@ function ProjectCard({ project: p }: { project: ProjectSummary }) {
             <span className="pcard__steps">
               {p.steps.map((s) => (
                 <span key={s.label} className={`pcard__step${s.done ? ' pcard__step--done' : ''}`}>
-                  {s.done ? <img src={checkCircle} alt="" width={16} height={16} /> : <span className="pcard__step-dot" />}
+                  {s.done ? <img src={checkCircle} alt="" width={20} height={20} /> : <span className="pcard__step-dot" />}
                   {s.label}
                 </span>
               ))}
@@ -137,7 +139,7 @@ function ProjectCard({ project: p }: { project: ProjectSummary }) {
             <span className="pcard__people">
               {p.members.map((m) => (
                 <span key={m} className="pcard__person">
-                  <Avatar who={m} size={28} />
+                  <Avatar who={m} size={34} />
                   {memberNames[m]}
                 </span>
               ))}

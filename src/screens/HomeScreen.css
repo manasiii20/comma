@@ -1,21 +1,25 @@
 /* ---------- Home (projects) screen ---------- */
 /*
-  Real CSS pixels (no window scaling) so text never shrinks below its set size.
-  Type scale: 56 / 20 / 16. Spacing on a 4px grid.
-  Secondary text uses #b3b3b3 on #333 (about 5:1) and #a6a6a6 on #404040 (about 4.3:1).
+  Desktop (>=1024px): Figma's 1920x1080 frame in design units; useFitToWindow scales it to the window.
+  Layout and dimensions follow Figma. Text is larger than in Figma for legibility, on a 4px scale
+  (20 for titles and card text, 16 inside the expanded card).
 */
 .home {
-  --gutter: clamp(20px, 4.2vw, 80px);
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
 
   box-sizing: border-box;
   min-height: 100vh;
-  padding: 56px var(--gutter) 80px;
+  padding: 80px 0 80px 78px;
   background: #262626;
   color: #f2f2f2;
   font-family: 'Garet', sans-serif;
   font-size: 16px;
   line-height: 24px;
+}
+
+.home--fit {
+  min-height: 0;
+  overflow: hidden;
 }
 
 .home :where(h1, p) {
@@ -62,9 +66,9 @@
 .home__logo {
   position: relative;
   display: block;
-  width: 116px;
-  aspect-ratio: 131 / 90;
-  margin-bottom: -16px;
+  width: 131px;
+  height: 90px;
+  margin-bottom: -20px;
   overflow: hidden;
 }
 
@@ -79,39 +83,42 @@
 
 .home__wordmark {
   position: relative;
-  font-size: 56px;
+  font-size: 62px;
   font-weight: 800;
-  line-height: 72px;
-  letter-spacing: -0.56px;
+  line-height: normal;
+  letter-spacing: -0.62px;
   color: #f6f6f6;
 }
 
 /* ---------- Toolbar ---------- */
 .home__toolbar {
-  margin-top: 32px;
+  margin-top: 34px;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 12px;
+  gap: 18px;
 }
 
 .home-search,
 .home-filter {
   box-sizing: border-box;
-  height: 48px;
-  padding: 4px;
+  height: 55px;
+  padding: 7px;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 20px;
   border-radius: 12px;
   background: #404040;
+  font-size: 20px;
+  line-height: 28px;
+  letter-spacing: 0.2px;
   color: #a6a6a6;
   white-space: nowrap;
 }
 
 .home-search {
-  flex: 0 1 640px;
-  min-width: 260px;
+  width: 640px;
+  gap: 22px;
   cursor: text;
   transition: box-shadow 0.15s;
 }
@@ -122,8 +129,8 @@
 
 .home-search__icon,
 .home-filter__icon {
-  width: 40px;
-  height: 40px;
+  width: 41px;
+  height: 41px;
   display: grid;
   place-items: center;
   flex-shrink: 0;
@@ -134,8 +141,9 @@
 .home-search__input {
   flex: 1;
   min-width: 0;
-  height: 24px;
+  height: 28px;
   padding-right: 12px;
+  letter-spacing: inherit;
   color: #f2f2f2;
 }
 
@@ -149,7 +157,7 @@
 }
 
 .home-filter {
-  padding-right: 20px;
+  padding-right: 24px;
   transition: background 0.15s, color 0.15s;
 }
 
@@ -160,16 +168,18 @@
 
 /* ---------- Cards ---------- */
 .home__cards {
-  margin-top: 48px;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-  align-items: start;
-  gap: 24px;
+  margin-top: 77px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 41px;
 }
 
 .add-card,
 .pcard-slot {
-  height: 128px;
+  flex-shrink: 0;
+  width: 430px;
+  height: 126px;
 }
 
 .add-card {
@@ -179,10 +189,13 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 9px;
   border-radius: 20px;
   background: #333;
-  color: #f2f2f2;
+  font-size: 20px;
+  line-height: 28px;
+  letter-spacing: 0.2px;
+  color: #f6f6f6;
   transition: background 0.15s;
 }
 
@@ -197,14 +210,14 @@
 }
 
 .add-card__border rect {
-  x: 0.5px;
-  y: 0.5px;
-  width: calc(100% - 1px);
-  height: calc(100% - 1px);
-  rx: 19.5px;
+  x: 0.375px;
+  y: 0.375px;
+  width: calc(100% - 0.75px);
+  height: calc(100% - 0.75px);
+  rx: 19.6px;
   fill: none;
   stroke: #808080;
-  stroke-width: 1px;
+  stroke-width: 0.75px;
   stroke-dasharray: 14 16;
   stroke-dashoffset: 7;
   transition: stroke 0.15s;
@@ -218,7 +231,7 @@
   stroke: #a6a6a6;
 }
 
-/* The slot holds the resting height; the card itself grows over whatever is below it. */
+/* The slot holds the resting size; the card grows over whatever is below it. */
 .pcard-slot {
   position: relative;
 }
@@ -230,19 +243,21 @@
   z-index: 1;
   box-sizing: border-box;
   width: 100%;
-  padding: 20px;
+  min-height: 126px;
+  padding: 16px 23px;
   display: flex;
   flex-direction: column;
   border-radius: 20px;
   background: #333;
   color: #f2f2f2;
-  transition: box-shadow 0.32s var(--ease), background 0.32s var(--ease);
+  transition: box-shadow 0.32s var(--ease), background 0.32s var(--ease), padding 0.32s var(--ease);
 }
 
 .pcard:is(:hover, :focus-visible) {
   z-index: 2;
+  padding-bottom: 24px;
   background: #363636;
-  box-shadow: 0 0 0 1px #474747, 0 24px 48px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 0 0 1px #4a4a4a, 0 24px 56px rgba(0, 0, 0, 0.5);
 }
 
 .pcard__head {
@@ -250,7 +265,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: 24px;
 }
 
 .pcard__title {
@@ -267,7 +282,7 @@
 }
 
 .pcard__summary-bar {
-  flex: 0 1 172px;
+  flex: 0 0 180px;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -283,8 +298,8 @@
   display: block;
   flex: 1;
   min-width: 48px;
-  height: 8px;
-  border-radius: 8px;
+  height: 9px;
+  border-radius: 15px;
   background: #e6e6e6;
 }
 
@@ -293,7 +308,7 @@
   left: 0;
   top: 0;
   height: 100%;
-  border-radius: 8px;
+  border-radius: 15px;
   background: #7fdb7f;
 }
 
@@ -338,8 +353,8 @@
 
 /* Summary row */
 .pcard__meta-row {
-  padding-top: 16px;
-  height: 32px;
+  padding-top: 17px;
+  height: 37px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -358,9 +373,9 @@
   align-items: center;
   gap: 8px;
   font-family: 'Gilroy', sans-serif;
-  font-size: 16px;
-  line-height: 24px;
-  letter-spacing: 0.16px;
+  font-size: 20px;
+  line-height: 28px;
+  letter-spacing: 0.2px;
   color: #b3b3b3;
   white-space: nowrap;
 }
@@ -376,30 +391,26 @@
 }
 
 .pcard__stack > * + * {
-  margin-left: -6px;
+  margin-left: -5px;
 }
 
-.pcard__stack > * {
-  box-shadow: 0 0 0 2px #333;
-}
-
-/* Detail */
+/* ---------- Expanded detail ---------- */
 .pcard__detail {
-  padding-top: 16px;
+  padding-top: 20px;
   display: flex;
   flex-direction: column;
+  font-size: 20px;
+  line-height: 28px;
 }
 
 .pcard__progress {
   box-sizing: border-box;
   align-self: flex-start;
-  width: 280px;
-  max-width: 100%;
-  height: 40px;
-  padding: 0 16px 0 10px;
+  height: 44px;
+  padding: 0 18px 0 10px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   border: 1px solid #4d4d4d;
   border-radius: 999px;
 }
@@ -409,14 +420,20 @@
   white-space: nowrap;
 }
 
-.pcard__progress .pbar {
-  height: 6px;
+.pcard__progress .pcard__pct {
+  font-size: 20px;
+  line-height: 28px;
 }
 
-/* Step list with a tree rail that starts under the progress pill's check icon (x = 20px). */
+.pcard__progress .pbar {
+  flex: 0 0 104px;
+  height: 7px;
+}
+
+/* Step list with a tree rail that starts under the progress pill's check icon (x = 22px). */
 .pcard__steps {
   margin-top: 8px;
-  padding-left: 40px;
+  padding-left: 44px;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -424,7 +441,7 @@
 
 .pcard__step {
   position: relative;
-  height: 24px;
+  height: 32px;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -435,10 +452,10 @@
 .pcard__step::before {
   content: '';
   position: absolute;
-  left: -20px;
-  top: -16px;
+  left: -22px;
+  top: -8px;
   width: 14px;
-  height: 28px;
+  height: 24px;
   border-left: 1px solid #5c5c5c;
   border-bottom: 1px solid #5c5c5c;
   border-bottom-left-radius: 6px;
@@ -447,9 +464,9 @@
 .pcard__step:not(:last-child)::after {
   content: '';
   position: absolute;
-  left: -20px;
-  top: 12px;
-  height: 20px;
+  left: -22px;
+  top: 16px;
+  height: 16px;
   border-left: 1px solid #5c5c5c;
 }
 
@@ -459,8 +476,8 @@
 
 .pcard__step-dot {
   box-sizing: border-box;
-  width: 16px;
-  height: 16px;
+  width: 20px;
+  height: 20px;
   flex-shrink: 0;
   border: 1px solid #8c8c8c;
   border-radius: 999px;
@@ -468,9 +485,11 @@
 
 .pcard__props {
   margin-top: 20px;
+  padding-top: 20px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
+  border-top: 1px solid #454545;
 }
 
 .pcard__prop {
@@ -479,13 +498,11 @@
 }
 
 .pcard__prop-label {
-  width: 100px;
+  width: 124px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   font-family: 'Gilroy', sans-serif;
-  font-size: 16px;
-  line-height: 24px;
   color: #b3b3b3;
 }
 
@@ -496,8 +513,8 @@
 }
 
 .pcard__chip {
-  height: 32px;
-  padding: 0 12px 0 6px;
+  height: 36px;
+  padding: 0 14px 0 8px;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -505,8 +522,8 @@
   background: #404040;
   font-family: 'Gilroy', sans-serif;
   font-weight: 500;
-  font-size: 16px;
-  line-height: 24px;
+  font-size: 20px;
+  line-height: 28px;
   color: #f2f2f2;
   white-space: nowrap;
 }
@@ -520,11 +537,11 @@
 
 .pcard__person {
   box-sizing: border-box;
-  height: 40px;
+  height: 44px;
   padding: 0 12px 0 5px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   border: 1px solid #4d4d4d;
   border-radius: 999px;
   color: #f2f2f2;
@@ -540,38 +557,88 @@
   }
 }
 
-/* ---------- Phones ---------- */
-@media (max-width: 640px) {
+/* ---------- Tablets and phones (<1024px): natural flow ---------- */
+@media (max-width: 1023px) {
   .home {
-    padding-top: 40px;
-  }
-
-  .home__logo {
-    width: 96px;
-  }
-
-  .home__wordmark {
-    font-size: 48px;
-    line-height: 60px;
+    padding: 40px 20px 60px;
   }
 
   .home-search {
-    flex-basis: 100%;
-    min-width: 0;
+    width: 100%;
   }
 
   .home-filter {
     flex: 1 1 0;
-    min-width: 0;
   }
 
   .home__cards {
-    margin-top: 32px;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 16px;
+    margin-top: 40px;
+    gap: 20px;
+  }
+}
+
+@media (max-width: 470px) {
+  .home__logo {
+    width: 104px;
+    height: 72px;
+    margin-bottom: -16px;
+  }
+
+  .home__wordmark {
+    font-size: 48px;
+  }
+
+  .home-search,
+  .home-filter {
+    height: 48px;
+    padding: 4px;
+    font-size: 16px;
+  }
+
+  .home-search__icon,
+  .home-filter__icon,
+  .home-filter > img {
+    width: 40px;
+    height: 40px;
+  }
+
+  .home-filter {
+    gap: 12px;
+    padding-right: 12px;
+  }
+
+  .home__cards {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .add-card,
+  .pcard-slot {
+    width: 100%;
+  }
+
+  .pcard {
+    padding: 16px 20px;
+  }
+
+  .pcard__head {
+    gap: 12px;
+  }
+
+  .pcard__summary-bar {
+    flex: 0 1 120px;
+    min-width: 0;
+  }
+
+  .pcard__summary-bar .pbar {
+    min-width: 32px;
   }
 
   .pcard__facts {
     gap: 12px;
+  }
+
+  .pcard__fact {
+    font-size: 16px;
   }
 }
