@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react'
+import { useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react'
 import { Avatar } from '../components/Avatar'
 import { Icon } from '../components/Icon'
 import { useFitToWindow } from '../hooks/useFitToWindow'
@@ -80,6 +80,8 @@ export default function HomeScreen() {
 
 function ProjectCard({ project: p }: { project: ProjectSummary }) {
   const doneCount = p.steps.filter((s) => s.done).length
+  const openHeight = useOpenHeight()
+
   const content = (
     <>
       <span className="pcard__head">
@@ -90,80 +92,97 @@ function ProjectCard({ project: p }: { project: ProjectSummary }) {
         </span>
       </span>
 
-      <span className="pcard__body">
-        <span className="pcard__fold pcard__fold--summary" aria-hidden="true">
-          <span className="pcard__meta-row">
-            <span className="pcard__facts">
-              <span className="pcard__fact">
-                <img src={flagIcons[p.flag]} alt="" className={`pcard__flag pcard__flag--${p.flag}`} />
-                {p.credits} credits
-              </span>
-              <span className="pcard__fact">
-                <img src={stageIcons[p.stage]} alt="" width={14} height={14} />
-                {p.stage}
-              </span>
-            </span>
-            <span className="pcard__stack">
-              {p.members.map((m) => (
-                <Avatar key={m} who={m} size={37} />
-              ))}
-            </span>
+      <span className="pcard__summary" aria-hidden="true">
+        <span className="pcard__facts">
+          <span className="pcard__fact">
+            <img src={flagIcons[p.flag]} alt="" className={`pcard__flag pcard__flag--${p.flag}`} />
+            {p.credits} credits
+          </span>
+          <span className="pcard__fact">
+            <img src={stageIcons[p.stage]} alt="" width={14} height={14} />
+            {p.stage}
           </span>
         </span>
+        <span className="pcard__stack">
+          {p.members.map((m) => (
+            <Avatar key={m} who={m} size={37} />
+          ))}
+        </span>
+      </span>
 
-        <span className="pcard__fold pcard__fold--detail">
-          <span className="pcard__detail">
-            <span className="pcard__progress">
-              <img src={checkCircle} alt="" width={24} height={24} />
-              <span className="pcard__count">
-                {doneCount} of {p.steps.length} steps
-              </span>
-              <Bar fill={p.barFill} />
-              <span className="pcard__pct">{p.progress}%</span>
-            </span>
-
-            <span className="pcard__steps">
-              {p.steps.map((s) => (
-                <span key={s.label} className={`pcard__step${s.done ? ' pcard__step--done' : ''}`}>
-                  {s.done ? <img src={checkCircle} alt="" width={20} height={20} /> : <span className="pcard__step-dot" />}
-                  {s.label}
-                </span>
-              ))}
-            </span>
-
-            <span className="pcard__props">
-              <Prop icon={<img src={flagSmall} alt="" width={10} height={14} />} label="Priority" value={p.priority} />
-              <Prop icon={<img src={statusSmall} alt="" width={14} height={14} />} label="Status" value={p.status} />
-            </span>
-
-            <span className="pcard__people">
-              {p.members.map((m) => (
-                <span key={m} className="pcard__person">
-                  <Avatar who={m} size={34} />
-                  {memberNames[m]}
-                </span>
-              ))}
-            </span>
+      <span className="pcard__detail" ref={openHeight.detailRef}>
+        <span className="pcard__progress pcard__reveal">
+          <img src={checkCircle} alt="" width={20} height={20} />
+          <span className="pcard__count">
+            {doneCount} of {p.steps.length}
           </span>
+          <Bar fill={p.barFill} />
+          <span className="pcard__pct">{p.progress}%</span>
+        </span>
+
+        <span className="pcard__steps pcard__reveal">
+          {p.steps.map((s) => (
+            <span key={s.label} className={`pcard__step${s.done ? ' pcard__step--done' : ''}`}>
+              {s.done ? <img src={checkCircle} alt="" width={18} height={18} /> : <span className="pcard__step-dot" />}
+              {s.label}
+            </span>
+          ))}
+        </span>
+
+        <span className="pcard__props pcard__reveal">
+          <Prop icon={<img src={flagSmall} alt="" width={9} height={12} />} label="Priority" value={p.priority} />
+          <Prop icon={<img src={statusSmall} alt="" width={12} height={12} />} label="Status" value={p.status} />
+        </span>
+
+        <span className="pcard__people pcard__reveal">
+          {p.members.map((m) => (
+            <span key={m} className="pcard__person">
+              <Avatar who={m} size={28} />
+              {memberNames[m]}
+            </span>
+          ))}
         </span>
       </span>
     </>
   )
 
   const label = `${p.name}: ${p.progress}% complete, ${p.credits} credits, ${p.stage}`
+  const style = { '--open-h': openHeight.value ? `${openHeight.value}px` : undefined } as CSSProperties
   return (
     <div className="pcard-slot">
       {p.href ? (
-        <a className="pcard" href={p.href} aria-label={`Open ${label}`}>
+        <a className="pcard" href={p.href} aria-label={`Open ${label}`} style={style}>
           {content}
         </a>
       ) : (
-        <div className="pcard" tabIndex={0} aria-label={label}>
+        <div className="pcard" tabIndex={0} aria-label={label} style={style}>
           {content}
         </div>
       )}
     </div>
   )
+}
+
+// The open card height is the detail block's bottom edge plus the card's bottom padding.
+// Measuring it lets CSS animate a plain pixel height, which is smoother than animating to `auto`.
+const OPEN_PADDING_BOTTOM = 24
+
+function useOpenHeight() {
+  const detailRef = useRef<HTMLSpanElement>(null)
+  const [value, setValue] = useState(0)
+
+  useLayoutEffect(() => {
+    const el = detailRef.current
+    if (!el) return
+    const measure = () => setValue(Math.ceil(el.offsetTop + el.offsetHeight + OPEN_PADDING_BOTTOM))
+    measure()
+    const ro = new ResizeObserver(measure)
+    ro.observe(el)
+    document.fonts?.ready.then(measure)
+    return () => ro.disconnect()
+  }, [])
+
+  return { detailRef, value }
 }
 
 function Bar({ fill }: { fill: number }) {

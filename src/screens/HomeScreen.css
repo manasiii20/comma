@@ -172,13 +172,13 @@
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
-  gap: 41px;
+  gap: 40px;
 }
 
 .add-card,
 .pcard-slot {
   flex-shrink: 0;
-  width: 430px;
+  width: 460px;
   height: 126px;
 }
 
@@ -231,36 +231,46 @@
   stroke: #a6a6a6;
 }
 
-/* The slot holds the resting size; the card grows over whatever is below it. */
+/*
+  The slot holds the resting size; the card grows over whatever is below it.
+  Only the card's pixel height animates (to --open-h, measured in JS). The detail block sits at a
+  fixed position inside, so the growing card simply reveals it, and its rows fade up one by one.
+  A 70ms hover delay keeps the card from flickering open when the pointer just passes over it.
+*/
 .pcard-slot {
   position: relative;
 }
 
 .pcard {
+  --open-ease: cubic-bezier(0.22, 1, 0.36, 1);
+
   position: absolute;
   left: 0;
   top: 0;
   z-index: 1;
   box-sizing: border-box;
   width: 100%;
-  min-height: 126px;
-  padding: 16px 23px;
+  height: 126px;
+  padding: 16px 36px 16px 24px;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   border-radius: 20px;
   background: #333;
   color: #f2f2f2;
-  transition: box-shadow 0.32s var(--ease), background 0.32s var(--ease), padding 0.32s var(--ease);
+  transition: height 0.3s var(--open-ease), box-shadow 0.3s ease, background 0.3s ease;
 }
 
 .pcard:is(:hover, :focus-visible) {
   z-index: 2;
-  padding-bottom: 24px;
-  background: #363636;
-  box-shadow: 0 0 0 1px #4a4a4a, 0 24px 56px rgba(0, 0, 0, 0.5);
+  height: var(--open-h, auto);
+  background: #353535;
+  box-shadow: 0 0 0 1px #444, 0 10px 24px rgba(0, 0, 0, 0.22);
+  transition: height 0.42s var(--open-ease) 70ms, box-shadow 0.3s ease 70ms, background 0.3s ease 70ms;
 }
 
 .pcard__head {
+  flex-shrink: 0;
   height: 40px;
   display: flex;
   align-items: center;
@@ -286,11 +296,16 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  transition: opacity 0.2s ease;
 }
 
-.pcard:is(:hover, :focus-visible) .pcard__summary-bar {
+.pcard__summary-bar,
+.pcard__summary {
+  transition: opacity 0.22s ease 0.08s;
+}
+
+.pcard:is(:hover, :focus-visible) :is(.pcard__summary-bar, .pcard__summary) {
   opacity: 0;
+  transition: opacity 0.14s ease 70ms;
 }
 
 .pbar {
@@ -321,39 +336,10 @@
   font-variant-numeric: tabular-nums;
 }
 
-/* Summary <-> detail: two grid rows that trade 1fr and 0fr, so the height animates without measuring. */
-.pcard__body {
-  display: grid;
-  grid-template-rows: 1fr 0fr;
-  transition: grid-template-rows 0.32s var(--ease);
-}
-
-.pcard:is(:hover, :focus-visible) .pcard__body {
-  grid-template-rows: 0fr 1fr;
-}
-
-.pcard__fold {
-  min-height: 0;
-  overflow: hidden;
-  transition: opacity 0.2s ease;
-}
-
-.pcard__fold--detail {
-  opacity: 0;
-}
-
-.pcard:is(:hover, :focus-visible) .pcard__fold--summary {
-  opacity: 0;
-}
-
-.pcard:is(:hover, :focus-visible) .pcard__fold--detail {
-  opacity: 1;
-  transition-delay: 0.08s;
-}
-
 /* Summary row */
-.pcard__meta-row {
-  padding-top: 17px;
+.pcard__summary {
+  flex-shrink: 0;
+  margin-top: 17px;
   height: 37px;
   display: flex;
   align-items: center;
@@ -394,57 +380,85 @@
   margin-left: -5px;
 }
 
-/* ---------- Expanded detail ---------- */
+/* ---------- Expanded detail (layout follows the Figma "onboarding main 2" card) ---------- */
 .pcard__detail {
-  padding-top: 20px;
+  position: absolute;
+  top: 72px;
+  left: 24px;
+  right: 30px;
   display: flex;
   flex-direction: column;
-  font-size: 20px;
-  line-height: 28px;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.pcard__reveal {
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.12s ease, transform 0.12s ease;
+}
+
+.pcard:is(:hover, :focus-visible) .pcard__reveal {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.3s ease, transform 0.36s var(--open-ease);
+}
+
+.pcard:is(:hover, :focus-visible) .pcard__reveal:nth-child(1) {
+  transition-delay: 130ms;
+}
+
+.pcard:is(:hover, :focus-visible) .pcard__reveal:nth-child(2) {
+  transition-delay: 175ms;
+}
+
+.pcard:is(:hover, :focus-visible) .pcard__reveal:nth-child(3) {
+  transition-delay: 220ms;
+}
+
+.pcard:is(:hover, :focus-visible) .pcard__reveal:nth-child(4) {
+  transition-delay: 265ms;
 }
 
 .pcard__progress {
   box-sizing: border-box;
   align-self: flex-start;
-  height: 44px;
-  padding: 0 18px 0 10px;
+  height: 36px;
+  padding: 0 16px 0 8px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   border: 1px solid #4d4d4d;
   border-radius: 999px;
 }
 
 .pcard__count {
-  margin-right: 4px;
+  margin-right: 2px;
   white-space: nowrap;
 }
 
-.pcard__progress .pcard__pct {
-  font-size: 20px;
-  line-height: 28px;
-}
-
 .pcard__progress .pbar {
-  flex: 0 0 104px;
-  height: 7px;
+  flex: 0 0 96px;
+  height: 6px;
 }
 
-/* Step list with a tree rail that starts under the progress pill's check icon (x = 22px). */
+/* Step list with a tree rail that starts under the progress pill's check icon (x = 19px). */
 .pcard__steps {
-  margin-top: 8px;
-  padding-left: 44px;
+  margin-top: 10px;
+  padding-left: 36px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 4px;
 }
 
 .pcard__step {
   position: relative;
-  height: 32px;
+  height: 28px;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
+  font-size: 18px;
+  line-height: 24px;
   color: #f2f2f2;
   white-space: nowrap;
 }
@@ -452,9 +466,9 @@
 .pcard__step::before {
   content: '';
   position: absolute;
-  left: -22px;
-  top: -8px;
-  width: 14px;
+  left: -17px;
+  top: -10px;
+  width: 12px;
   height: 24px;
   border-left: 1px solid #5c5c5c;
   border-bottom: 1px solid #5c5c5c;
@@ -464,9 +478,9 @@
 .pcard__step:not(:last-child)::after {
   content: '';
   position: absolute;
-  left: -22px;
-  top: 16px;
-  height: 16px;
+  left: -17px;
+  top: 14px;
+  height: 18px;
   border-left: 1px solid #5c5c5c;
 }
 
@@ -476,8 +490,8 @@
 
 .pcard__step-dot {
   box-sizing: border-box;
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   flex-shrink: 0;
   border: 1px solid #8c8c8c;
   border-radius: 999px;
@@ -485,11 +499,9 @@
 
 .pcard__props {
   margin-top: 20px;
-  padding-top: 20px;
   display: flex;
   flex-direction: column;
   gap: 10px;
-  border-top: 1px solid #454545;
 }
 
 .pcard__prop {
@@ -498,61 +510,68 @@
 }
 
 .pcard__prop-label {
-  width: 124px;
+  width: 100px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   font-family: 'Gilroy', sans-serif;
   color: #b3b3b3;
 }
 
 .pcard__prop-icon {
-  width: 16px;
+  width: 14px;
   display: grid;
   place-items: center;
 }
 
 .pcard__chip {
-  height: 36px;
-  padding: 0 14px 0 8px;
+  height: 30px;
+  padding: 0 12px 0 6px;
   display: flex;
   align-items: center;
-  gap: 8px;
-  border-radius: 8px;
+  gap: 6px;
+  border-radius: 7px;
   background: #404040;
   font-family: 'Gilroy', sans-serif;
   font-weight: 500;
-  font-size: 20px;
-  line-height: 28px;
   color: #f2f2f2;
   white-space: nowrap;
 }
 
+.pcard__chip img {
+  width: 18px;
+  height: 18px;
+}
+
 .pcard__people {
   margin-top: 20px;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
 }
 
 .pcard__person {
   box-sizing: border-box;
-  height: 44px;
-  padding: 0 12px 0 5px;
+  height: 36px;
+  padding: 0 10px 0 4px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 6px;
   border: 1px solid #4d4d4d;
   border-radius: 999px;
+  font-size: 14px;
+  line-height: 20px;
   color: #f2f2f2;
   white-space: nowrap;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .pcard,
-  .pcard__body,
-  .pcard__fold,
-  .pcard__summary-bar {
+  .pcard:is(:hover, :focus-visible),
+  .pcard__summary,
+  .pcard__summary-bar,
+  .pcard__reveal,
+  .pcard:is(:hover, :focus-visible) :is(.pcard__summary-bar, .pcard__summary, .pcard__reveal) {
     transition: none;
   }
 }
@@ -619,6 +638,11 @@
 
   .pcard {
     padding: 16px 20px;
+  }
+
+  .pcard__detail {
+    left: 20px;
+    right: 20px;
   }
 
   .pcard__head {
