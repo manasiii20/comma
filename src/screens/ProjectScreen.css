@@ -16,6 +16,7 @@
   background: #262626;
   color: #f2f2f2;
   font-family: 'Garet', sans-serif;
+  letter-spacing: 0.02em;
 }
 
 :where(.app) h1,
@@ -219,8 +220,8 @@
 }
 
 .header__title h1 {
-  height: 65px;
-  font-size: 50px;
+  height: 57px;
+  font-size: 44px;
   line-height: normal;
   color: #f2f2f2;
 }
@@ -370,9 +371,9 @@
 
 /* Dashboard overview */
 .overview {
-  min-height: 316px;
-  padding: 32px var(--card-px) 28px;
-  gap: 15px;
+  min-height: 0;
+  padding: 28px var(--card-px) 24px;
+  gap: 18px;
 }
 
 .overview__stats {
@@ -409,7 +410,7 @@
 
 .ring span {
   position: relative;
-  font-size: 18px;
+  font-size: 20px;
   color: #ccc;
 }
 
@@ -426,9 +427,9 @@
 }
 
 .stat--number span {
-  max-width: 96px;
-  font-size: 14px;
-  line-height: 18px;
+  max-width: 104px;
+  font-size: 15px;
+  line-height: 20px;
   color: #bfbfbf;
 }
 
@@ -445,7 +446,8 @@
 
 .stat--team > span {
   text-align: center;
-  font-size: 14px;
+  white-space: nowrap;
+  font-size: 15px;
   line-height: 17px;
   color: #bfbfbf;
 }
@@ -455,7 +457,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 40px;
+  gap: 24px;
 }
 
 .overview__desc {
@@ -491,27 +493,29 @@
 
 /* Activity */
 .activity {
-  min-height: 316px;
-  padding: 30px var(--activity-px, 36px) 28px;
-  gap: 14px;
+  min-height: 0;
+  padding: 28px var(--activity-px, 30px) 24px;
+  gap: 18px;
 }
 
 .activity__body {
   display: grid;
   grid-template-columns: minmax(0, 190fr) minmax(0, 226fr);
-  align-items: center;
+  align-items: stretch;
+  flex: 1;
   gap: 10px;
 }
 
 .activity__feed {
   display: flex;
   flex-direction: column;
-  gap: 7px;
+  gap: 10px;
 }
 
 .feed-item {
   box-sizing: border-box;
-  height: 56px;
+  flex: 1;
+  min-height: 64px;
   padding: 10px 12px;
   display: flex;
   align-items: center;
@@ -538,14 +542,15 @@
 .feed-item__text strong {
   font-family: 'Gilroy', sans-serif;
   font-weight: 400;
-  font-size: 14px;
-  line-height: 18px;
+  font-size: 16px;
+  line-height: 22px;
   color: #ccc;
 }
 
 .feed-item__text span {
-  font-size: 12px;
-  line-height: 16px;
+  font-size: 14px;
+  letter-spacing: 0;
+  line-height: 20px;
   color: #a6a6a6;
   white-space: nowrap;
   overflow: hidden;
@@ -575,7 +580,9 @@
 
 .quick-actions {
   min-height: 0;
-  padding: 12px 12px 8px;
+  flex: 1;
+  padding: 10px;
+  justify-content: center;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -589,17 +596,18 @@
 
 .qa {
   box-sizing: border-box;
-  height: 52px;
-  padding-top: 7px;
+  height: 60px;
+  padding-top: 9px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   border: 0.5px solid #292929;
   border-radius: 6px;
   background: rgba(64, 64, 64, 0.4);
   font-family: 'Gilroy', sans-serif;
-  font-size: 12px;
+  font-size: 13px;
+  letter-spacing: 0;
   line-height: 16px;
   color: #d9d9d9;
   transition: background 0.15s;
@@ -641,7 +649,7 @@
 
 .project-stats {
   min-height: 0;
-  padding: 12px 14px 10px;
+  padding: 12px 14px;
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -650,9 +658,9 @@
 .project-stats__rows {
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  font-size: 12px;
-  line-height: 16px;
+  gap: 4px;
+  font-size: 14px;
+  line-height: 20px;
   white-space: nowrap;
 }
 
@@ -676,14 +684,14 @@
 .checklist,
 .timeline,
 .team {
-  min-height: var(--row2-min, 437px);
+  min-height: var(--row2-min, 400px);
   padding: 30px var(--team-px, 32px) 43px;
 }
 
 .checklist__list {
   flex: 1 1 0;
   min-height: 120px;
-  margin: 22px 0 38px;
+  margin: 20px 0 24px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
@@ -694,20 +702,20 @@
 .task {
   box-sizing: border-box;
   width: 100%;
-  height: 40px;
-  padding: 8px 13px;
+  height: 46px;
+  padding: 0 16px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   border: 0.75px solid #333;
-  border-radius: 8px;
+  border-radius: 10px;
   background: #262626;
   text-align: left;
   transition: background 0.15s;
 }
 
 .checklist__list li:nth-child(-n + 2) .task {
-  height: 39px;
+  height: 46px;
 }
 
 .task:hover {
@@ -720,21 +728,26 @@
 
 .task__box {
   box-sizing: border-box;
-  width: 13px;
-  height: 13px;
+  width: 16px;
+  height: 16px;
   flex-shrink: 0;
-  border: 0.5px solid #999;
-  border-radius: 2px;
+  border: 1px solid #999;
+  border-radius: 3px;
 }
 
 .task__label {
   min-width: 0;
-  font-size: 16px;
+  font-size: 17px;
   line-height: normal;
-  color: #bfbfbf;
+  color: #cccccc;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.task .icon img {
+  width: 16px;
+  height: 16px;
 }
 
 .task--done .task__label {
@@ -859,7 +872,7 @@
   display: flex;
   align-items: center;
   gap: 7px;
-  font-size: 12px;
+  font-size: 13px;
   line-height: normal;
   color: #bfbfbf;
   white-space: nowrap;
@@ -888,7 +901,7 @@
   padding: 18px 12px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   border: 0.75px solid #333;
   border-radius: 13px;
   background: #262626;
@@ -918,18 +931,19 @@
 }
 
 .member__text span {
-  font-size: 12px;
+  font-size: 13px;
+  letter-spacing: 0;
   line-height: 16px;
   color: #a6a6a6;
 }
 
 .status {
   box-sizing: border-box;
-  min-width: 44px;
+  min-width: 40px;
   height: 22px;
   flex-shrink: 0;
   margin-left: 0;
-  padding: 1px 8px 0;
+  padding: 1px 6px 0;
   display: grid;
   place-items: center;
   border: 0.5px solid #313131;
@@ -1156,6 +1170,7 @@
 
 .standard__note {
   font-size: 13px;
+  letter-spacing: 0;
   line-height: normal;
   color: #d9d9d9;
 }

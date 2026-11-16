@@ -253,7 +253,6 @@ export default function ProjectScreen({ view = 'overview' }: { view?: ProjectVie
           <section className="card overview">
             <div className="card__heading">
               <h2>Dashboard Overview</h2>
-              <p>Your project status at a glance</p>
             </div>
             <div className="overview__stats">
               <div className="stat">
@@ -311,13 +310,12 @@ export default function ProjectScreen({ view = 'overview' }: { view?: ProjectVie
           <section className="card activity">
             <div className="card__heading">
               <h2>Activity</h2>
-              <p>Your project status at a glance</p>
             </div>
             <div className="activity__body">
               <ul className="activity__feed">
-                {activity.slice(0, 3).map((item) => (
+                {activity.slice(0, 2).map((item) => (
                   <li key={item.id} className="feed-item">
-                    <Avatar who={item.avatar} size={33} />
+                    <Avatar who={item.avatar} size={34} />
                     <div className="feed-item__text">
                       <strong>{item.title}</strong>
                       <span>{item.detail}</span>
@@ -326,8 +324,7 @@ export default function ProjectScreen({ view = 'overview' }: { view?: ProjectVie
                 ))}
               </ul>
               <div className="activity__side">
-                <div className="panel quick-actions">
-                  <h3>Quick Actions</h3>
+                <div className="panel quick-actions" role="group" aria-label="Quick actions">
                   <div className="quick-actions__row">
                     <a className="qa" href={project.gameUrl} target="_blank" rel="noreferrer">
                       <span className="qa__game">
@@ -340,10 +337,10 @@ export default function ProjectScreen({ view = 'overview' }: { view?: ProjectVie
                       <Icon src={qaTask} width={18} />
                       Task
                     </button>
-                    <button className="qa" title="Analysis">
+                    <a className="qa" href={viewHref('analysis')}>
                       <Icon src={qaAnalysis} width={18} />
                       Analysis
-                    </button>
+                    </a>
                     <button className="qa" onClick={exportProject}>
                       <span className="qa__export">
                         <img src={qaExport} alt="" />
@@ -352,8 +349,7 @@ export default function ProjectScreen({ view = 'overview' }: { view?: ProjectVie
                     </button>
                   </div>
                 </div>
-                <div className="panel project-stats">
-                  <h3>Project Stats</h3>
+                <div className="panel project-stats" role="group" aria-label="Project stats">
                   <div className="project-stats__rows">
                     <div>
                       <span>Individual Work Hours</span>
@@ -383,7 +379,7 @@ export default function ProjectScreen({ view = 'overview' }: { view?: ProjectVie
                     role="checkbox"
                     aria-checked={task.done}
                   >
-                    {task.done ? <Icon src={checkOn} width={13} /> : <span className="task__box" />}
+                    {task.done ? <Icon src={checkOn} width={16} /> : <span className="task__box" />}
                     <span className="task__label">{task.label}</span>
                   </button>
                 </li>
@@ -472,7 +468,7 @@ export default function ProjectScreen({ view = 'overview' }: { view?: ProjectVie
             <ul className="team__list">
               {team.map((m) => (
                 <li key={m.id} className="member">
-                  <Avatar who={m.avatar} size={38} />
+                  <Avatar who={m.avatar} size={34} />
                   <div className="member__text">
                     <strong>{m.name}</strong>
                     <span>{m.role}</span>
