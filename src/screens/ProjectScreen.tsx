@@ -18,7 +18,10 @@ import {
 } from '../data/project'
 import logo from '../assets/figma/logo.png'
 import avatarAanya from '../assets/figma/avatar-aanya.png'
-import navBook from '../assets/figma/nav-book.svg'
+import navBookPlain from '../assets/figma/nav-book-plain.svg'
+import calendarSmall from '../assets/figma/analysis/calendar-small.svg'
+import { mayloHealth } from '../data/analysis'
+import { AnalysisView } from './AnalysisView'
 import navFolder from '../assets/figma/nav-folder.svg'
 import navUsers from '../assets/figma/nav-users.svg'
 import navCalendar from '../assets/figma/nav-calendar.svg'
@@ -73,18 +76,26 @@ const legend = [
   { label: 'Submission Deadline', swatch: '' },
 ]
 
-const navItems = [
+const PROJECT_ROUTE = '#/project/system-design'
+
+// Overview and Analytics switch views; Files, Team and Calendar have no screens yet.
+const navItems: { id: string; label: string; icon: string; w: number; h: number; view?: ProjectView }[] = [
+  { id: 'overview', label: 'Overview', icon: navBookPlain, w: 25, h: 22, view: 'overview' },
   { id: 'files', label: 'Files', icon: navFolder, w: 25, h: 21 },
   { id: 'team', label: 'Team', icon: navUsers, w: 24, h: 24 },
   { id: 'calendar', label: 'Calendar', icon: navCalendar, w: 24, h: 26 },
-  { id: 'analytics', label: 'Analytics', icon: navChart, w: 24, h: 24 },
+  { id: 'analytics', label: 'Analytics', icon: navChart, w: 24, h: 24, view: 'analysis' },
 ]
+
+export type ProjectView = 'overview' | 'analysis'
+
+const viewHref = (view: ProjectView) => (view === 'overview' ? PROJECT_ROUTE : `${PROJECT_ROUTE}/analysis`)
 
 const newId = () => Math.random().toString(36).slice(2, 9)
 
 const trackPos = (i: number, count: number) => `calc(var(--track-l) + var(--track-w) * ${i / (count - 1)})`
 
-export default function ProjectScreen() {
+export default function ProjectScreen({ view = 'overview' }: { view?: ProjectView }) {
   const [tasks, setTasks] = usePersistentState<Task[]>('queue2.tasks', initialTasks)
   const [activity, setActivity] = usePersistentState<ActivityItem[]>('queue2.activity', initialActivity)
   const [description, setDescription] = usePersistentState('queue2.description', initialDescription)
@@ -102,7 +113,7 @@ export default function ProjectScreen() {
   const fitStyle = useFitToWindow()
 
   const logActivity = (title: string, detail: string) =>
-    setActivity((prev) => [{ id: newId(), avatar: 'aanya' as const, title, detail }, ...prev].slice(0, 20))
+    setActivity((prev) => [{ id: newId(), avatar: 'aanya' as const, title, detail, at: Date.now() }, ...prev].slice(0, 20))
 
   const visibleTasks = tasks.filter((t) => t.label.toLowerCase().includes(query.trim().toLowerCase()))
 
@@ -181,16 +192,27 @@ export default function ProjectScreen() {
             <img src={logo} alt="" />
           </a>
           <nav className="sidebar__nav">
-            <button className="nav-item nav-item--active" aria-label="Overview" aria-current="page">
-              <Icon src={navBook} width={60} />
-            </button>
-            <div className="sidebar__nav-links">
-              {navItems.map((item) => (
-                <button key={item.id} className="nav-item" aria-label={item.label} title={item.label}>
-                  <Icon src={item.icon} width={item.w} height={item.h} />
+            {navItems.map((item) => {
+              const active = item.view === view
+              const className = `nav-item nav-item--${item.id}${active ? ' nav-item--active' : ''}`
+              const icon = <Icon src={item.icon} width={item.w} height={item.h} />
+              return item.view ? (
+                <a
+                  key={item.id}
+                  className={className}
+                  href={viewHref(item.view)}
+                  aria-label={item.label}
+                  title={item.label}
+                  aria-current={active ? 'page' : undefined}
+                >
+                  {icon}
+                </a>
+              ) : (
+                <button key={item.id} className={className} aria-label={item.label} title={item.label}>
+                  {icon}
                 </button>
-              ))}
-            </div>
+              )
+            })}
           </nav>
         </div>
         <div className="sidebar__bottom">
@@ -221,6 +243,10 @@ export default function ProjectScreen() {
           </label>
         </header>
 
+        {view === 'analysis' ? (
+          <AnalysisView tasks={tasks} activity={activity} query={query} />
+        ) : (
+          <>
         {/* Row 1 */}
         <div className="row row--top">
           <section className="card overview">
@@ -477,6 +503,8 @@ export default function ProjectScreen() {
             </div>
           </section>
         </div>
+          </>
+        )}
       </main>
 
       {/* Profile panel */}
@@ -488,6 +516,42 @@ export default function ProjectScreen() {
             <p>{user.email}</p>
           </div>
         </div>
+        {view === 'analysis' ? (
+          <section className="side-card maylo">
+            <div className="side-card__heading">
+              <h3>Maylo’s Health</h3>
+              <p>Representative of your work health</p>
+            </div>
+            <div className="maylo__body">
+              <div className="maylo__pal">
+                <span>
+                  <img src={palImage} alt={palName ? `${palName} the pal` : 'Maylo'} />
+                </span>
+              </div>
+              <dl className="maylo__stats">
+                <div>
+                  <dt>Work Hours</dt>
+                  <dd>{mayloHealth.workHours}</dd>
+                </div>
+                <div>
+                  <dt>Focus Mode</dt>
+                  <dd>{mayloHealth.focusMode}</dd>
+                </div>
+                <div>
+                  <dt>Burnout Scale</dt>
+                  <dd>{mayloHealth.burnout}</dd>
+                </div>
+              </dl>
+            </div>
+            <p className="maylo__mood">{mayloHealth.mood}</p>
+            <button type="button" className="maylo__breaks">
+              <span className="maylo__breaks-icon">
+                <Icon src={calendarSmall} width={11} height={13} />
+              </span>
+              Set Breaks for Maylo
+            </button>
+          </section>
+        ) : (
         <section className="side-card pal">
           <div className="side-card__heading">
             <h3>Make Your Own Pal</h3>
@@ -508,6 +572,7 @@ export default function ProjectScreen() {
             />
           </label>
         </section>
+        )}
 
         <section className="side-card standard">
           <div className="side-card__heading">

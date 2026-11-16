@@ -4,6 +4,7 @@ import { useHashRoute } from './hooks/useHashRoute'
 
 export default function App() {
   const route = useHashRoute()
-  if (route === '/project/system-design') return <ProjectScreen />
+  if (route === '/project/system-design') return <ProjectScreen view="overview" />
+  if (route === '/project/system-design/analysis') return <ProjectScreen view="analysis" />
   return <HomeScreen />
 }

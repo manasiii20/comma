@@ -117,14 +117,6 @@
   gap: var(--nav-gap, 39px);
 }
 
-.sidebar__nav-links {
-  width: 25px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: var(--nav-gap, 39px);
-}
-
 .nav-item {
   display: block;
   line-height: 0;
@@ -132,15 +124,30 @@
   transition: opacity 0.15s, transform 0.15s;
 }
 
-.sidebar__nav-links .nav-item,
+.sidebar__nav .nav-item:not(.nav-item--active),
 .sidebar__bottom .nav-item {
   opacity: 0.85;
 }
 
-.sidebar__nav-links .nav-item:hover,
+.sidebar__nav .nav-item:not(.nav-item--active):hover,
 .sidebar__bottom .nav-item:hover {
   opacity: 1;
   transform: scale(1.08);
+}
+
+/* The current view sits in Figma's 60x60 dark rounded box. */
+.sidebar__nav .nav-item--active {
+  width: 60px;
+  height: 60px;
+  display: grid;
+  place-items: center;
+  border-radius: 13px;
+  background: #262626;
+}
+
+/* Inactive Overview keeps its book where it sits inside the box (Figma "self reflective"). */
+.sidebar__nav .nav-item--overview:not(.nav-item--active) {
+  margin-top: 19px;
 }
 
 .sidebar__bottom {
@@ -1306,17 +1313,21 @@
     width: 52px;
   }
 
-  .sidebar__nav,
-  .sidebar__nav-links {
+  .sidebar__nav {
     width: auto;
     flex-direction: row;
     align-items: center;
     gap: 18px;
   }
 
-  .nav-item--active .icon {
-    margin: -9px;
-    transform: scale(0.7);
+  .sidebar__nav .nav-item--active {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+  }
+
+  .sidebar__nav .nav-item--overview:not(.nav-item--active) {
+    margin-top: 0;
   }
 
   .sidebar__bottom {
@@ -1346,8 +1357,7 @@
     display: none;
   }
 
-  .sidebar__nav,
-  .sidebar__nav-links {
+  .sidebar__nav {
     gap: 14px;
   }
 }

@@ -2,7 +2,8 @@ export type AvatarKey = 'aanya' | 'shreya' | 'dhruv' | 'krisha'
 
 export type Task = { id: string; label: string; done: boolean }
 
-export type ActivityItem = { id: string; avatar: AvatarKey; title: string; detail: string }
+// `at` is when it happened (ms); built-in items carry a fixed `ago` label instead.
+export type ActivityItem = { id: string; avatar: AvatarKey; title: string; detail: string; at?: number; ago?: string }
 
 export type TeamMember = {
   id: string
@@ -45,9 +46,9 @@ export const initialTasks: Task[] = [
 ]
 
 export const initialActivity: ActivityItem[] = [
-  { id: 'a1', avatar: 'dhruv', title: 'Task Completed', detail: 'Finished Gigamap' },
-  { id: 'a2', avatar: 'aanya', title: 'File Updated', detail: 'Project Timeline' },
-  { id: 'a3', avatar: 'shreya', title: 'New Comment', detail: 'Gigamap Feedback' },
+  { id: 'a1', avatar: 'dhruv', title: 'Task Completed', detail: 'Finished Gigamap', ago: '37m' },
+  { id: 'a2', avatar: 'aanya', title: 'File Updated', detail: 'Project Timeline', ago: '1h' },
+  { id: 'a3', avatar: 'shreya', title: 'New Comment', detail: 'Gigamap Feedback', ago: '2h' },
 ]
 
 export const team: TeamMember[] = [

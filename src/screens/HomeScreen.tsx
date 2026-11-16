@@ -67,7 +67,6 @@ export default function HomeScreen() {
   const updateProject = (id: string, patch: Partial<ProjectSummary>) =>
     setList((prev) => prev.map((p) => (p.id === id ? { ...p, ...patch } : p)))
 
-  const deleteProject = (id: string) => setList((prev) => prev.filter((p) => p.id !== id))
 
   return (
     <div className={`home${fitStyle ? ' home--fit' : ''}`} style={fitStyle}>
@@ -120,7 +119,6 @@ export default function HomeScreen() {
             key={p.id}
             project={p}
             onChange={(patch) => updateProject(p.id, patch)}
-            onDelete={() => deleteProject(p.id)}
           />
         ))}
         {filtering && visible.length === 0 && (
@@ -141,11 +139,9 @@ export default function HomeScreen() {
 function ProjectCard({
   project: p,
   onChange,
-  onDelete,
 }: {
   project: ProjectSummary
   onChange: (patch: Partial<ProjectSummary>) => void
-  onDelete: () => void
 }) {
   const doneCount = p.steps.filter((s) => s.done).length
   const openHeight = useOpenHeight()
@@ -253,17 +249,6 @@ function ProjectCard({
             ))}
           </span>
 
-          <div className="pcard__actions pcard__reveal">
-            <button
-              type="button"
-              className="pcard__delete"
-              onClick={() => {
-                if (window.confirm(`Delete "${p.name}"?`)) onDelete()
-              }}
-            >
-              Delete project
-            </button>
-          </div>
         </div>
       </div>
     </div>

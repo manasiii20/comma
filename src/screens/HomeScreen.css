@@ -416,40 +416,8 @@
   transition-delay: 265ms;
 }
 
-.pcard:is(:hover, :focus-visible, :has(:focus-visible), .pcard--pinned) .pcard__reveal:nth-child(5) {
-  transition-delay: 310ms;
-}
-
 .pcard__steps--empty {
   display: none;
-}
-
-.pcard__actions {
-  margin-top: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-}
-
-.pcard__delete {
-  height: 36px;
-  padding: 0 12px;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  border-radius: 9px;
-  font-size: 16px;
-  line-height: 24px;
-  transition: background 0.15s, color 0.15s;
-}
-
-.pcard__delete {
-  margin-left: -12px;
-  color: #f58a8a;
-}
-
-.pcard__delete:hover {
-  background: rgba(245, 87, 87, 0.12);
 }
 
 .pcard__progress {
