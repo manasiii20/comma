@@ -298,7 +298,7 @@
   align-items: center;
   border-radius: 8px;
   background: #404040;
-  font-size: 15px;
+  font-size: 16px;
   color: #808080;
   transition: background 0.15s, color 0.15s;
   cursor: pointer;
@@ -328,7 +328,7 @@
   flex: 1;
   min-width: 0;
   height: 25px;
-  font-size: 15px;
+  font-size: 16px;
   color: #e6e6e6;
 }
 
@@ -394,9 +394,9 @@
 }
 
 .stat--number span {
-  max-width: 84px;
-  font-size: 13px;
-  line-height: 17px;
+  max-width: 96px;
+  font-size: 14px;
+  line-height: 18px;
   color: #bfbfbf;
 }
 
@@ -413,7 +413,7 @@
 
 .stat--team > span {
   text-align: center;
-  font-size: 13px;
+  font-size: 14px;
   line-height: 17px;
   color: #bfbfbf;
 }
@@ -433,7 +433,7 @@
   min-height: 48px;
   display: flex;
   align-items: center;
-  font-size: 15px;
+  font-size: 16px;
   line-height: normal;
   color: #bfbfbf;
 }
@@ -460,15 +460,15 @@
 /* Activity */
 .activity {
   min-height: 316px;
-  padding: 32px var(--card-px) 31px;
-  gap: 16px;
+  padding: 30px var(--activity-px, 36px) 28px;
+  gap: 14px;
 }
 
 .activity__body {
   display: grid;
-  grid-template-columns: minmax(0, 184fr) minmax(0, 222fr);
+  grid-template-columns: minmax(0, 190fr) minmax(0, 226fr);
   align-items: center;
-  gap: 11px;
+  gap: 10px;
 }
 
 .activity__feed {
@@ -479,11 +479,11 @@
 
 .feed-item {
   box-sizing: border-box;
-  height: 55px;
-  padding: 11px 13px;
+  height: 56px;
+  padding: 10px 12px;
   display: flex;
   align-items: center;
-  gap: 11px;
+  gap: 10px;
   border: 0.75px solid #333;
   border-radius: 10px;
   background: #262626;
@@ -506,14 +506,14 @@
 .feed-item__text strong {
   font-family: 'Gilroy', sans-serif;
   font-weight: 400;
-  font-size: 12px;
-  line-height: 15px;
+  font-size: 14px;
+  line-height: 18px;
   color: #ccc;
 }
 
 .feed-item__text span {
-  font-size: 10px;
-  line-height: normal;
+  font-size: 12px;
+  line-height: 16px;
   color: #a6a6a6;
   white-space: nowrap;
   overflow: hidden;
@@ -535,40 +535,40 @@
 
 .panel h3 {
   font-family: 'Gilroy', sans-serif;
-  font-size: 12px;
-  line-height: 11px;
+  font-size: 14px;
+  line-height: 16px;
   letter-spacing: 0.24px;
   color: #ccc;
 }
 
 .quick-actions {
-  min-height: 95px;
-  padding: 14px 14px 10px 16px;
+  min-height: 0;
+  padding: 12px 12px 8px;
   display: flex;
   flex-direction: column;
-  gap: 9px;
+  gap: 8px;
 }
 
 .quick-actions__row {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 5px;
+  gap: 4px;
 }
 
 .qa {
   box-sizing: border-box;
-  height: 49px;
-  padding-top: 8px;
+  height: 52px;
+  padding-top: 7px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
   border: 0.5px solid #292929;
   border-radius: 6px;
   background: rgba(64, 64, 64, 0.4);
   font-family: 'Gilroy', sans-serif;
-  font-size: 9px;
-  line-height: normal;
+  font-size: 12px;
+  line-height: 16px;
   color: #d9d9d9;
   transition: background 0.15s;
 }
@@ -608,19 +608,19 @@
 }
 
 .project-stats {
-  height: 76px;
-  padding: 14px 16px 11px 15px;
+  min-height: 0;
+  padding: 12px 14px 10px;
   display: flex;
   flex-direction: column;
-  gap: 7px;
+  gap: 6px;
 }
 
 .project-stats__rows {
   display: flex;
   flex-direction: column;
-  gap: 3px;
-  font-size: 10px;
-  line-height: normal;
+  gap: 2px;
+  font-size: 12px;
+  line-height: 16px;
   white-space: nowrap;
 }
 
@@ -645,7 +645,7 @@
 .timeline,
 .team {
   min-height: var(--row2-min, 437px);
-  padding: 30px var(--card-px) 43px;
+  padding: 30px var(--team-px, 32px) 43px;
 }
 
 .checklist__list {
@@ -697,7 +697,7 @@
 
 .task__label {
   min-width: 0;
-  font-size: 13px;
+  font-size: 16px;
   line-height: normal;
   color: #bfbfbf;
   white-space: nowrap;
@@ -711,7 +711,7 @@
 
 .checklist__empty {
   padding: 10px 13px;
-  font-size: 13px;
+  font-size: 16px;
   color: #737373;
 }
 
@@ -733,7 +733,7 @@
   transform: translateX(-50%);
   display: flex;
   align-items: center;
-  font-size: 15px;
+  font-size: 16px;
   line-height: normal;
   color: #bfbfbf;
 }
@@ -794,7 +794,7 @@
   border-radius: 5px;
   font-family: 'Gilroy', sans-serif;
   font-weight: 500;
-  font-size: 9px;
+  font-size: 12px;
   color: #404040;
 }
 
@@ -810,12 +810,12 @@
 .timeline__legend {
   box-sizing: border-box;
   margin-top: 7px;
-  min-height: 49px;
-  padding: 8px;
+  min-height: 0;
+  padding: 6px 8px;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   column-gap: 5px;
-  row-gap: 7px;
+  row-gap: 4px;
   box-shadow: inset 0 0 0 0.75px #333;
   border-radius: 10px;
   background: #262626;
@@ -823,11 +823,11 @@
 
 .timeline__legend span {
   min-width: 0;
-  height: 13px;
+  height: 16px;
   display: flex;
   align-items: center;
   gap: 7px;
-  font-size: 10px;
+  font-size: 12px;
   line-height: normal;
   color: #bfbfbf;
   white-space: nowrap;
@@ -853,10 +853,10 @@
 .member {
   box-sizing: border-box;
   height: 74px;
-  padding: 18px 14px;
+  padding: 18px 12px;
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 10px;
   border: 0.75px solid #333;
   border-radius: 13px;
   background: #262626;
@@ -880,31 +880,31 @@
 .member__text strong {
   font-family: 'Gilroy', sans-serif;
   font-weight: 400;
-  font-size: 14px;
-  line-height: 15px;
+  font-size: 16px;
+  line-height: 20px;
   color: #ccc;
 }
 
 .member__text span {
-  font-size: 10px;
-  line-height: 14px;
+  font-size: 12px;
+  line-height: 16px;
   color: #a6a6a6;
 }
 
 .status {
   box-sizing: border-box;
-  width: 37px;
-  height: 17px;
+  min-width: 44px;
+  height: 22px;
   flex-shrink: 0;
-  margin-left: -7px;
-  padding-top: 1px;
+  margin-left: 0;
+  padding: 1px 8px 0;
   display: grid;
   place-items: center;
   border: 0.5px solid #313131;
   border-radius: 4px;
   background: #2b2b2b;
   font-family: 'Gilroy', sans-serif;
-  font-size: 9px;
+  font-size: 12px;
 }
 
 .status--active {
@@ -970,7 +970,7 @@
 }
 
 .profile__id p {
-  font-size: 12px;
+  font-size: 14px;
   line-height: normal;
   color: #ccc;
 }
@@ -1004,7 +1004,7 @@
 }
 
 .side-card__heading p {
-  font-size: 13px;
+  font-size: 14px;
   line-height: 20px;
   letter-spacing: -0.26px;
   color: #8c8c8c;
@@ -1053,7 +1053,7 @@
 .pal__name input {
   flex: 1;
   min-width: 0;
-  font-size: 13px;
+  font-size: 14px;
   color: #e6e6e6;
 }
 
@@ -1121,7 +1121,7 @@
 }
 
 .standard__note {
-  font-size: 13px;
+  font-size: 14px;
   line-height: normal;
   color: #d9d9d9;
 }
