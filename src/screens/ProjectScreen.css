@@ -460,9 +460,9 @@
 
 .team-grid {
   display: grid;
-  grid-template-columns: repeat(2, 31px);
-  grid-template-rows: repeat(2, 31px);
-  gap: 6px;
+  grid-template-columns: repeat(2, 40px);
+  grid-template-rows: repeat(2, 40px);
+  gap: 8px;
 }
 
 .stat--team > span {
@@ -635,7 +635,7 @@
 
 .quick-actions__row {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   flex: 1;
   gap: 8px;
 }
@@ -675,8 +675,7 @@
   line-height: 0;
 }
 
-.qa__game,
-.qa__export {
+.qa__game {
   position: relative;
   width: 18px;
   height: 18px;
@@ -691,18 +690,6 @@
   position: absolute;
   left: 6.25px;
   top: 7.25px;
-}
-
-.qa__export {
-  border-radius: 4px;
-  background: #262626;
-}
-
-.qa__export img {
-  position: absolute;
-  left: 3.85px;
-  top: 5px;
-  display: block;
 }
 
 .project-stats {
@@ -743,7 +730,7 @@
 .timeline,
 .team {
   min-height: var(--row2-min, 400px);
-  padding: 30px var(--team-px, 32px) 43px;
+  padding: 30px var(--team-px, 32px) 30px;
 }
 
 .checklist__list {
@@ -760,7 +747,7 @@
 .task {
   box-sizing: border-box;
   width: 100%;
-  height: 46px;
+  height: 50px;
   padding: 0 16px;
   display: flex;
   align-items: center;
@@ -773,7 +760,7 @@
 }
 
 .checklist__list li:nth-child(-n + 2) .task {
-  height: 46px;
+  height: 50px;
 }
 
 .task-row {
@@ -949,7 +936,7 @@
 
 .timeline__legend {
   box-sizing: border-box;
-  margin-top: 10px;
+  margin-top: 22px;
   min-height: 0;
   padding: 10px 14px;
   display: grid;
@@ -988,12 +975,12 @@
   margin: 22px 0 30px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 }
 
 .member {
   box-sizing: border-box;
-  height: 74px;
+  height: 82px;
   padding: 18px 12px;
   display: flex;
   align-items: center;
@@ -1232,10 +1219,20 @@
 
 .standard__locked p {
   position: absolute;
-  inset: 15px 19px;
+  /* Four centred lines, vertically centred in the box. */
+  left: 22px;
+  right: 22px;
+  top: 50%;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
+  overflow: hidden;
+  transform: translateY(-50%);
   font-size: 13px;
-  line-height: normal;
-  text-align: justify;
+  line-height: 20px;
+  letter-spacing: 0;
+  text-align: center;
   color: #8d8d8d;
   filter: blur(2px);
 }

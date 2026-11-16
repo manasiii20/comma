@@ -1,0 +1,133 @@
+.add-dialog.breaks-dialog {
+  width: 480px;
+}
+
+.add-dialog .breaks-dialog__intro {
+  margin: -8px 0 0;
+  font-size: 15px;
+  line-height: 22px;
+  color: #b3b3b3;
+}
+
+.add-dialog .choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.add-dialog .choice {
+  height: 40px;
+  padding: 0 16px;
+  border: 1px solid #4d4d4d;
+  border-radius: 999px;
+  background: none;
+  font-size: 16px;
+  color: #c7c7c7;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.add-dialog .choice:hover {
+  border-color: #808080;
+}
+
+.add-dialog .choice[aria-checked='true'] {
+  border-color: #7fdb7f;
+  background: rgba(127, 219, 127, 0.12);
+  color: #f2f2f2;
+}
+
+.add-dialog .breaks-dialog__off {
+  margin-right: auto;
+  color: #f58a8a;
+}
+
+.break-toast {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 900;
+  max-width: calc(100vw - 48px);
+  padding: 14px 14px 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border-radius: 14px;
+  background: #2b2b2b;
+  box-shadow: 0 0 0 1px #454545, 0 14px 32px rgba(0, 0, 0, 0.4);
+  font-family: 'Garet', sans-serif;
+  color: #f2f2f2;
+  animation: break-toast-in 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes break-toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+.break-toast__dot {
+  width: 10px;
+  height: 10px;
+  flex-shrink: 0;
+  border-radius: 999px;
+  background: #ccd6b3;
+  box-shadow: 0 0 0 4px rgba(204, 214, 179, 0.18);
+}
+
+.break-toast__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.break-toast__text strong {
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 20px;
+}
+
+.break-toast__text span {
+  font-size: 13px;
+  line-height: 18px;
+  color: #b3b3b3;
+}
+
+.break-toast__actions {
+  display: flex;
+  gap: 8px;
+}
+
+.break-toast__btn {
+  height: 36px;
+  padding: 0 14px;
+  border: none;
+  border-radius: 10px;
+  background: #383838;
+  font: inherit;
+  font-size: 14px;
+  color: #d9d9d9;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.break-toast__btn:hover {
+  background: #444;
+}
+
+.break-toast__btn--primary {
+  background: #ccd6b3;
+  color: #232b1a;
+}
+
+.break-toast__btn--primary:hover {
+  background: #d8e1c2;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .break-toast {
+    animation: none;
+  }
+}

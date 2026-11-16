@@ -1,4 +1,4 @@
-﻿import { useRef, useState, type CSSProperties, type KeyboardEvent } from 'react'
+﻿import { useEffect, useRef, useState, type CSSProperties, type KeyboardEvent } from 'react'
 import { Avatar } from '../components/Avatar'
 import { Icon } from '../components/Icon'
 import { SvgIcon } from '../components/SvgIcon'
@@ -23,6 +23,8 @@ import navBookPlain from '../assets/figma/nav-book-plain.svg?raw'
 import calendarSmall from '../assets/figma/analysis/calendar-small.svg'
 import { mayloHealth } from '../data/analysis'
 import { AnalysisView } from './AnalysisView'
+import { BreakToast, BreaksDialog } from '../components/MayloBreaks'
+import { breakLabel, type BreakSettings } from '../utils/breaks'
 import navFolder from '../assets/figma/nav-folder.svg?raw'
 import navUsers from '../assets/figma/nav-users.svg?raw'
 import navCalendar from '../assets/figma/nav-calendar.svg?raw'
@@ -35,7 +37,6 @@ import qaGame from '../assets/figma/qa-game.svg'
 import playTriangle from '../assets/figma/vector-dot.svg'
 import qaTask from '../assets/figma/qa-task.svg'
 import qaAnalysis from '../assets/figma/qa-analysis.svg'
-import qaExport from '../assets/figma/qa-export.svg'
 import checkOn from '../assets/figma/check-on.svg'
 import plusIcon from '../assets/figma/plus.svg'
 import messageIcon from '../assets/icons/message.svg'
@@ -192,14 +193,38 @@ export default function ProjectScreen({ view = 'overview' }: { view?: ProjectVie
     setMessaging(false)
   }
 
-  const exportProject = () => {
-    const data = { project, description, tasks, activity, team }
-    const url = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }))
-    const a = document.createElement('a')
-    a.href = url
-    a.download = 'queue2-project.json'
-    a.click()
-    URL.revokeObjectURL(url)
+  // Maylo's break reminders: saved settings plus the time the next break is due.
+  const [breaks, setBreaks] = usePersistentState<BreakSettings | null>('queue2.breaks', null)
+  const [nextBreakAt, setNextBreakAt] = usePersistentState<number | null>('queue2.nextBreakAt', null)
+  const [breaksOpen, setBreaksOpen] = useState(false)
+  const [breakDue, setBreakDue] = useState(false)
+
+  useEffect(() => {
+    if (!breaks || !nextBreakAt) return
+    const check = () => setBreakDue(Date.now() >= nextBreakAt)
+    check()
+    const id = window.setInterval(check, 15000)
+    return () => window.clearInterval(id)
+  }, [breaks, nextBreakAt])
+
+  const saveBreaks = (value: BreakSettings | null) => {
+    setBreaks(value)
+    setNextBreakAt(value ? Date.now() + value.every * 60000 : null)
+    setBreakDue(false)
+    setBreaksOpen(false)
+    logActivity('Breaks Updated', value ? breakLabel(value) : 'Reminders off')
+  }
+
+  const takeBreak = () => {
+    if (!breaks) return
+    setNextBreakAt(Date.now() + (breaks.length + breaks.every) * 60000)
+    setBreakDue(false)
+    logActivity('Break Taken', `${breaks.length} minute break`)
+  }
+
+  const snoozeBreak = () => {
+    setNextBreakAt(Date.now() + 5 * 60000)
+    setBreakDue(false)
   }
 
   const nudgeLock = () => {
@@ -296,11 +321,10 @@ export default function ProjectScreen({ view = 'overview' }: { view?: ProjectVie
                 <div className="team-grid">
                   {(['dhruv', 'aanya', 'krisha', 'shreya'] as const).map((who) => (
                     <span key={who} className="tip-target" data-tip={memberLabel(who)}>
-                      <Avatar who={who} size={31} />
+                      <Avatar who={who} size={40} />
                     </span>
                   ))}
                 </div>
-                <span>Team Members</span>
               </div>
             </div>
             <div className="overview__footer">
@@ -381,14 +405,6 @@ export default function ProjectScreen({ view = 'overview' }: { view?: ProjectVie
                       </span>
                       Analysis
                     </a>
-                    <button className="qa" onClick={exportProject} data-tip="Export" data-tip-detail="Download this project as a JSON file">
-                      <span className="qa__icon">
-                        <span className="qa__export">
-                          <img src={qaExport} alt="" />
-                        </span>
-                      </span>
-                      Export
-                    </button>
                   </div>
                 </div>
                 <div className="panel project-stats" role="group" aria-label="Project stats">
@@ -598,12 +614,16 @@ export default function ProjectScreen({ view = 'overview' }: { view?: ProjectVie
                 </div>
               </dl>
             </div>
-            <p className="maylo__mood">{mayloHealth.mood}</p>
-            <button type="button" className="maylo__breaks">
+            <button
+              type="button"
+              className={`maylo__breaks${breaks ? ' maylo__breaks--on' : ''}`}
+              onClick={() => setBreaksOpen(true)}
+              aria-haspopup="dialog"
+            >
               <span className="maylo__breaks-icon">
                 <Icon src={calendarSmall} width={11} height={13} />
               </span>
-              Set Breaks for Maylo
+              {breaks ? breakLabel(breaks) : 'Set Breaks for Maylo'}
             </button>
           </section>
         ) : (
@@ -636,8 +656,8 @@ export default function ProjectScreen({ view = 'overview' }: { view?: ProjectVie
           </div>
           <div className="standard__locked">
             <p>
-              Aim to create and execute solutions truly helpful an useful to the user in context. Aim to create and
-              execute solutions truly helpful an useful to the user in context. Aim to create.
+              Aim to create and execute solutions truly helpful and useful to the user in context, and keep the
+              people we design for at the centre of every decision.
             </p>
             <button
               className={`standard__lock ${lockNudge ? 'is-nudging' : ''}`}
@@ -654,6 +674,9 @@ export default function ProjectScreen({ view = 'overview' }: { view?: ProjectVie
           </p>
         </section>
       </aside>
+
+      <BreaksDialog open={breaksOpen} value={breaks} onSave={saveBreaks} onClose={() => setBreaksOpen(false)} />
+      {breaks && breakDue && <BreakToast length={breaks.length} onTake={takeBreak} onSnooze={snoozeBreak} />}
     </div>
   )
 }

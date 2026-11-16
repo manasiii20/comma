@@ -251,7 +251,7 @@
   padding: 28px 44px 26px;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  column-gap: 98px;
+  column-gap: 64px;
   border-radius: 25px;
 }
 
@@ -267,7 +267,7 @@
 .work__col--upcoming::before {
   content: '';
   position: absolute;
-  left: -49px;
+  left: -32px;
   top: 84px;
   height: 240px;
   border-left: 1px solid rgba(128, 128, 128, 0.45);
@@ -316,15 +316,28 @@
 .work-item {
   box-sizing: border-box;
   flex-shrink: 0;
-  min-height: 0;
-  padding: 10px 20px 12px;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border-radius: 14px;
+  background: #262626;
+  box-shadow: inset 0 0 0 1px #343434;
+  animation: feed-in 0.3s ease-out;
+}
+
+.work-item__main {
+  min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  border-radius: 12px;
-  background: #262626;
-  box-shadow: inset 0 0 0 0.75px #333;
-  animation: feed-in 0.3s ease-out;
+  gap: 10px;
+}
+
+.work-item__main h3 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .work-item h3 {
@@ -333,20 +346,6 @@
   font-size: 18px;
   line-height: 24px;
   color: #d9d9d9;
-}
-
-.work-item__head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-}
-
-.work-item__head h3 {
-  min-width: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .work-item__tags {
@@ -408,8 +407,12 @@
   flex-shrink: 0;
 }
 
+.work-item__people > * {
+  box-shadow: 0 0 0 2px #262626;
+}
+
 .work-item__people > * + * {
-  margin-left: -3px;
+  margin-left: -8px;
 }
 
 /* ---------- Maylo's Health (profile panel) ---------- */
@@ -419,12 +422,13 @@
 }
 
 .maylo .side-card__heading {
-  margin-bottom: 15px;
+  margin-bottom: 16px;
 }
 
 .maylo__body {
   display: flex;
   gap: 11px;
+  margin-bottom: 16px;
 }
 
 .maylo__pal {
@@ -491,20 +495,13 @@
   color: #ccd6b3;
 }
 
-.maylo__mood {
-  margin-top: 11px;
-  font-size: 14px;
-  line-height: 20px;
-  letter-spacing: -0.14px;
-  color: #e6e6e6;
-}
-
 .maylo__breaks {
   box-sizing: border-box;
   width: 100%;
-  height: 37px;
-  margin-top: 10px;
-  padding: 5px;
+  height: 40px;
+  /* Sits at the bottom of the card, which keeps the pal card's height on the other view. */
+  margin-top: auto;
+  padding: 5px 12px 5px 6px;
   display: flex;
   align-items: center;
   gap: 13px;
@@ -513,6 +510,10 @@
   font-size: 14px;
   color: #a6a6a6;
   transition: background 0.15s, color 0.15s;
+}
+
+.maylo__breaks--on {
+  color: #e6e6e6;
 }
 
 .maylo__breaks:hover {

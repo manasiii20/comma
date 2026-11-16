@@ -109,5 +109,4 @@ export const mayloHealth = {
   workHours: '8 hours',
   focusMode: '2 hours',
   burnout: '4 of 10',
-  mood: 'Maylo is doing great :)',
 }

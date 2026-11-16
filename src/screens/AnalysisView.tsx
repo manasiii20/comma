@@ -173,27 +173,27 @@ function WorkItem({ task }: { task: Task }) {
   const members: AvatarKey[] = meta?.members ?? ['aanya']
   return (
     <article className="work-item">
-      <div className="work-item__head">
+      <div className="work-item__main">
         <h3>{task.label}</h3>
-        <div className="work-item__people">
-          {members.map((m) => (
-            <Avatar key={m} who={m} size={30} />
-          ))}
-        </div>
+        {meta && (
+          <div className="work-item__tags">
+            <span className={`tag ${tagClass[meta.phase]}`}>{meta.phase}</span>
+            {task.done ? (
+              <span className={`tag tag--impact-${meta.weight.toLowerCase()}`}>{meta.weight} Impact</span>
+            ) : (
+              <span className={`tag tag--priority-${meta.weight.toLowerCase()}`}>{meta.weight} Priority</span>
+            )}
+            {task.done
+              ? meta.ago && <span className="tag tag--plain">{meta.ago}</span>
+              : meta.estimate && <span className="tag tag--estimate">{meta.estimate}</span>}
+          </div>
+        )}
       </div>
-      {meta && (
-        <div className="work-item__tags">
-          <span className={`tag ${tagClass[meta.phase]}`}>{meta.phase}</span>
-          {task.done ? (
-            <span className={`tag tag--impact-${meta.weight.toLowerCase()}`}>{meta.weight} Impact</span>
-          ) : (
-            <span className={`tag tag--priority-${meta.weight.toLowerCase()}`}>{meta.weight} Priority</span>
-          )}
-          {task.done
-            ? meta.ago && <span className="tag tag--plain">{meta.ago}</span>
-            : meta.estimate && <span className="tag tag--estimate">{meta.estimate}</span>}
-        </div>
-      )}
+      <div className="work-item__people">
+        {members.map((m) => (
+          <Avatar key={m} who={m} size={32} />
+        ))}
+      </div>
     </article>
   )
 }
