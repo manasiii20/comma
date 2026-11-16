@@ -1,17 +1,21 @@
 /* ---------- Home (projects) screen ---------- */
-/* Desktop (>=1024px): design units; useFitToWindow zooms this to the window. */
+/*
+  Real CSS pixels (no window scaling) so text never shrinks below its set size.
+  Type scale: 56 / 20 / 16. Spacing on a 4px grid.
+  Secondary text uses #b3b3b3 on #333 (about 5:1) and #a6a6a6 on #404040 (about 4.3:1).
+*/
 .home {
+  --gutter: clamp(20px, 4.2vw, 80px);
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+
   box-sizing: border-box;
   min-height: 100vh;
-  padding: 106px 0 0 78px;
+  padding: 56px var(--gutter) 80px;
   background: #262626;
-  color: #f6f6f6;
+  color: #f2f2f2;
   font-family: 'Garet', sans-serif;
-}
-
-.home--fit {
-  min-height: 0;
-  overflow: hidden;
+  font-size: 16px;
+  line-height: 24px;
 }
 
 .home :where(h1, p) {
@@ -39,23 +43,28 @@
 }
 
 .home :focus-visible {
-  outline: 1px solid #92da7a;
+  outline: 2px solid #92da7a;
   outline-offset: 2px;
+}
+
+.home img {
+  display: block;
+  flex-shrink: 0;
 }
 
 /* ---------- Brand ---------- */
 .home__brand {
-  width: 250px;
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
 }
 
 .home__logo {
   position: relative;
   display: block;
-  width: 131px;
-  height: 90px;
-  margin-bottom: -20px;
+  width: 116px;
+  aspect-ratio: 131 / 90;
+  margin-bottom: -16px;
   overflow: hidden;
 }
 
@@ -70,46 +79,51 @@
 
 .home__wordmark {
   position: relative;
-  font-size: 62px;
+  font-size: 56px;
   font-weight: 800;
-  line-height: normal;
-  letter-spacing: -0.62px;
+  line-height: 72px;
+  letter-spacing: -0.56px;
   color: #f6f6f6;
 }
 
 /* ---------- Toolbar ---------- */
 .home__toolbar {
-  margin-top: 34px;
+  margin-top: 32px;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 18px;
+  gap: 12px;
 }
 
 .home-search,
 .home-filter {
   box-sizing: border-box;
-  height: 55px;
-  padding: 7px;
+  height: 48px;
+  padding: 4px;
   display: flex;
   align-items: center;
+  gap: 12px;
   border-radius: 12px;
   background: #404040;
-  font-size: 20px;
-  line-height: 25px;
-  letter-spacing: 0.2px;
-  color: #808080;
+  color: #a6a6a6;
+  white-space: nowrap;
 }
 
 .home-search {
-  width: 640px;
-  gap: 22px;
+  flex: 0 1 640px;
+  min-width: 260px;
   cursor: text;
+  transition: box-shadow 0.15s;
+}
+
+.home-search:focus-within {
+  box-shadow: 0 0 0 1px #6b6b6b;
 }
 
 .home-search__icon,
 .home-filter__icon {
-  width: 41px;
-  height: 41px;
+  width: 40px;
+  height: 40px;
   display: grid;
   place-items: center;
   flex-shrink: 0;
@@ -120,74 +134,59 @@
 .home-search__input {
   flex: 1;
   min-width: 0;
-  height: 25px;
-  letter-spacing: inherit;
+  height: 24px;
+  padding-right: 12px;
   color: #f2f2f2;
 }
 
 .home-search__input::placeholder {
-  color: #808080;
+  color: #a6a6a6;
   opacity: 1;
 }
 
 .home-search__input::-webkit-search-cancel-button {
-  filter: invert(0.5);
+  filter: invert(0.6);
 }
 
 .home-filter {
-  gap: 20px;
-  transition: background 0.15s;
-}
-
-.home-filter img {
-  display: block;
-  flex-shrink: 0;
-}
-
-.home-filter--status {
-  width: 188px;
-}
-
-.home-filter--priority {
-  width: 195px;
+  padding-right: 20px;
+  transition: background 0.15s, color 0.15s;
 }
 
 .home-filter:hover {
-  background: #474747;
+  background: #4a4a4a;
+  color: #d9d9d9;
 }
 
 /* ---------- Cards ---------- */
 .home__cards {
-  margin-top: 77px;
-  display: flex;
-  align-items: flex-start;
-  gap: 41px;
+  margin-top: 48px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  align-items: start;
+  gap: 24px;
+}
+
+.add-card,
+.pcard-slot {
+  height: 128px;
 }
 
 .add-card {
+  position: relative;
   box-sizing: border-box;
-  width: 430px;
-  height: 126px;
-  padding-top: 30px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 9px;
-  position: relative;
+  justify-content: center;
+  gap: 8px;
   border-radius: 20px;
   background: #333;
-  font-size: 18px;
-  line-height: 25px;
-  letter-spacing: 0.18px;
-  color: #f6f6f6;
-  transition: background 0.15s, border-color 0.15s;
+  color: #f2f2f2;
+  transition: background 0.15s;
 }
 
-.add-card img {
-  display: block;
-}
-
-/* Figma draws this border with 14px dashes and 16px gaps, which CSS dashed borders cannot express. */
+/* 14px dashes with 16px gaps, as in the Figma file (CSS dashed borders cannot set the pattern). */
 .add-card__border {
   position: absolute;
   inset: 0;
@@ -198,14 +197,14 @@
 }
 
 .add-card__border rect {
-  x: 0.375px;
-  y: 0.375px;
-  width: calc(100% - 0.75px);
-  height: calc(100% - 0.75px);
-  rx: 19.6px;
+  x: 0.5px;
+  y: 0.5px;
+  width: calc(100% - 1px);
+  height: calc(100% - 1px);
+  rx: 19.5px;
   fill: none;
   stroke: #808080;
-  stroke-width: 0.75px;
+  stroke-width: 1px;
   stroke-dasharray: 14 16;
   stroke-dashoffset: 7;
   transition: stroke 0.15s;
@@ -216,91 +215,76 @@
 }
 
 .add-card:hover .add-card__border rect {
-  stroke: #999;
+  stroke: #a6a6a6;
 }
 
-/* A project card: 126px tall at rest, 383px when hovered or focused (Figma "onboarding main 2"). */
-.pcard {
-  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+/* The slot holds the resting height; the card itself grows over whatever is below it. */
+.pcard-slot {
   position: relative;
-  display: block;
-  flex-shrink: 0;
-  width: 430px;
-  height: 126px;
-  overflow: hidden;
+}
+
+.pcard {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
   border-radius: 20px;
   background: #333;
-  color: #f6f6f6;
-  transition: height 0.32s var(--ease);
+  color: #f2f2f2;
+  transition: box-shadow 0.32s var(--ease), background 0.32s var(--ease);
 }
 
 .pcard:is(:hover, :focus-visible) {
-  height: 383px;
+  z-index: 2;
+  background: #363636;
+  box-shadow: 0 0 0 1px #474747, 0 24px 48px rgba(0, 0, 0, 0.45);
+}
+
+.pcard__head {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
 }
 
 .pcard__title {
-  position: absolute;
-  left: 23px;
-  top: 16px;
-  width: 171px;
-  height: 37px;
+  height: 40px;
+  padding: 0 16px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  border-radius: 9px;
-  background: #262626;
-  font-size: 18px;
-  line-height: normal;
-  letter-spacing: 0.18px;
-  white-space: nowrap;
-  transition: left 0.32s var(--ease), top 0.32s var(--ease), width 0.32s var(--ease), height 0.32s var(--ease),
-    font-size 0.32s var(--ease), border-radius 0.32s var(--ease);
-}
-
-.pcard:is(:hover, :focus-visible) .pcard__title {
-  left: 19px;
-  top: 19px;
-  width: 204px;
-  height: 41px;
   border-radius: 10px;
+  background: #262626;
   font-size: 20px;
+  line-height: 28px;
   letter-spacing: 0.2px;
+  white-space: nowrap;
 }
 
-.pcard__compact,
-.pcard__detail {
-  position: absolute;
-  inset: 0;
-  display: block;
+.pcard__summary-bar {
+  flex: 0 1 172px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: opacity 0.2s ease;
 }
 
-.pcard__compact {
-  transition: opacity 0.16s ease 0.08s;
-}
-
-.pcard:is(:hover, :focus-visible) .pcard__compact {
+.pcard:is(:hover, :focus-visible) .pcard__summary-bar {
   opacity: 0;
-  transition-delay: 0s;
 }
 
-.pcard__detail {
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.12s ease, visibility 0s linear 0.12s;
-}
-
-.pcard:is(:hover, :focus-visible) .pcard__detail {
-  opacity: 1;
-  visibility: visible;
-  transition: opacity 0.24s ease 0.1s, visibility 0s;
-}
-
-/* Progress bars */
 .pbar {
   position: relative;
   display: block;
-  flex-shrink: 0;
-  border-radius: 15px;
+  flex: 1;
+  min-width: 48px;
+  height: 8px;
+  border-radius: 8px;
   background: #e6e6e6;
 }
 
@@ -309,364 +293,285 @@
   left: 0;
   top: 0;
   height: 100%;
-  border-radius: 15px;
+  border-radius: 8px;
   background: #7fdb7f;
 }
 
-/* Compact layout */
-.pcard__bar-group {
-  position: absolute;
-  left: 228px;
-  top: 25.5px;
-  width: 179px;
-  height: 18px;
-}
-
-.pcard__bar-group .pbar {
-  position: absolute;
-  left: 0;
-  top: 3px;
-}
-
 .pcard__pct {
-  position: absolute;
-  left: 149px;
-  top: 0;
   font-family: 'Gilroy', sans-serif;
   font-weight: 500;
-  font-size: 15px;
-  line-height: 18px;
-  color: #eaeaea;
+  font-size: 16px;
+  line-height: 24px;
+  color: #f2f2f2;
+  font-variant-numeric: tabular-nums;
 }
 
+/* Summary <-> detail: two grid rows that trade 1fr and 0fr, so the height animates without measuring. */
+.pcard__body {
+  display: grid;
+  grid-template-rows: 1fr 0fr;
+  transition: grid-template-rows 0.32s var(--ease);
+}
+
+.pcard:is(:hover, :focus-visible) .pcard__body {
+  grid-template-rows: 0fr 1fr;
+}
+
+.pcard__fold {
+  min-height: 0;
+  overflow: hidden;
+  transition: opacity 0.2s ease;
+}
+
+.pcard__fold--detail {
+  opacity: 0;
+}
+
+.pcard:is(:hover, :focus-visible) .pcard__fold--summary {
+  opacity: 0;
+}
+
+.pcard:is(:hover, :focus-visible) .pcard__fold--detail {
+  opacity: 1;
+  transition-delay: 0.08s;
+}
+
+/* Summary row */
 .pcard__meta-row {
-  position: absolute;
-  left: 23px;
-  top: 73px;
-  width: 384px;
-  height: 37px;
+  padding-top: 16px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 12px;
 }
 
 .pcard__facts {
   display: flex;
   align-items: center;
-  gap: 19px;
+  gap: 20px;
+  min-width: 0;
 }
 
 .pcard__fact {
   display: flex;
-  align-items: flex-start;
-  height: 19px;
+  align-items: center;
   gap: 8px;
   font-family: 'Gilroy', sans-serif;
-  font-size: 18px;
-  line-height: 19px;
-  letter-spacing: 0.18px;
-  color: #8c8c8c;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.16px;
+  color: #b3b3b3;
   white-space: nowrap;
 }
 
-.pcard__fact img {
-  display: block;
-  flex-shrink: 0;
-}
-
-.pcard__flag--thin {
+.pcard__flag {
   width: 11px;
   height: 14px;
-  margin: 1.5px -0.5px 0;
-}
-
-.pcard__flag--bold {
-  width: 11.5px;
-  height: 14.5px;
-  margin: 1.25px -0.75px 0;
-}
-
-.pcard__fact--credits {
-  min-width: 91px;
-}
-
-.pcard__fact--stage {
-  gap: 7.6px;
-}
-
-.pcard__fact--stage img {
-  margin: 1.6px -0.4px 0;
 }
 
 .pcard__stack {
-  position: relative;
-  display: block;
-  height: 37px;
-}
-
-.pcard__stack-item {
-  position: absolute;
-  top: 0;
-}
-
-/* Expanded layout (positions from the Figma frame, relative to the card) */
-.pcard__progress {
-  position: absolute;
-  left: 19px;
-  top: 76px;
-  box-sizing: border-box;
-  width: 219px;
-  height: 32px;
-  padding-left: 12px;
   display: flex;
-  align-items: center;
-  border: 1px solid #4d4d4d;
-  border-radius: 32px;
-}
-
-.pcard__progress img {
-  display: block;
   flex-shrink: 0;
 }
 
+.pcard__stack > * + * {
+  margin-left: -6px;
+}
+
+.pcard__stack > * {
+  box-shadow: 0 0 0 2px #333;
+}
+
+/* Detail */
+.pcard__detail {
+  padding-top: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.pcard__progress {
+  box-sizing: border-box;
+  align-self: flex-start;
+  width: 280px;
+  max-width: 100%;
+  height: 40px;
+  padding: 0 16px 0 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #4d4d4d;
+  border-radius: 999px;
+}
+
 .pcard__count {
-  width: 45px;
-  margin: 2px 7px 0 6px;
-  font-size: 13px;
-  line-height: 16px;
-  text-align: center;
-  color: #f6f6f6;
+  margin-right: 4px;
   white-space: nowrap;
 }
 
 .pcard__progress .pbar {
-  margin-top: 1.5px;
+  height: 6px;
 }
 
-.pcard__progress-pct {
-  margin: 2px 0 0 9px;
-  font-family: 'Gilroy', sans-serif;
-  font-size: 13px;
-  line-height: 15px;
-  color: #eaeaea;
-}
-
-.pcard__tree {
-  position: absolute;
-  left: 39.78px;
-  top: 108px;
-  width: 11.72px;
-  height: 109.5px;
-}
-
+/* Step list with a tree rail that starts under the progress pill's check icon (x = 20px). */
 .pcard__steps {
-  position: absolute;
-  left: 51px;
-  top: 124px;
+  margin-top: 8px;
+  padding-left: 40px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
 }
 
 .pcard__step {
+  position: relative;
+  height: 24px;
   display: flex;
   align-items: center;
-  gap: 8px;
-  height: 16px;
-  font-size: 13px;
-  line-height: 16px;
+  gap: 12px;
   color: #f2f2f2;
   white-space: nowrap;
 }
 
-.pcard__step--done {
-  color: #f6f6f6;
+.pcard__step::before {
+  content: '';
+  position: absolute;
+  left: -20px;
+  top: -16px;
+  width: 14px;
+  height: 28px;
+  border-left: 1px solid #5c5c5c;
+  border-bottom: 1px solid #5c5c5c;
+  border-bottom-left-radius: 6px;
 }
 
-.pcard__step img {
-  display: block;
+.pcard__step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: -20px;
+  top: 12px;
+  height: 20px;
+  border-left: 1px solid #5c5c5c;
+}
+
+.pcard__step--done {
+  color: #c7c7c7;
 }
 
 .pcard__step-dot {
   box-sizing: border-box;
-  width: 12px;
-  height: 12px;
-  border: 0.75px solid #4c4c4c;
-  border-radius: 100px;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  border: 1px solid #8c8c8c;
+  border-radius: 999px;
 }
 
 .pcard__props {
-  position: absolute;
-  left: 19px;
-  top: 248px;
+  margin-top: 20px;
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 8px;
 }
 
 .pcard__prop {
   display: flex;
   align-items: center;
-  height: 21px;
 }
 
 .pcard__prop-label {
+  width: 100px;
   display: flex;
   align-items: center;
-  flex-shrink: 0;
+  gap: 8px;
   font-family: 'Gilroy', sans-serif;
-  font-size: 13px;
-  line-height: 12px;
-  color: #8c8c8c;
+  font-size: 16px;
+  line-height: 24px;
+  color: #b3b3b3;
 }
 
-.pcard__prop:nth-child(1) .pcard__prop-label {
-  width: 72px;
-  gap: 7px;
-}
-
-.pcard__prop:nth-child(2) .pcard__prop-label {
-  width: 74px;
-  gap: 6px;
-}
-
-.pcard__prop-flag {
-  margin: 0 -0.5px;
-}
-
-.pcard__prop-status {
-  margin: -4.5px -0.25px 0;
+.pcard__prop-icon {
+  width: 16px;
+  display: grid;
+  place-items: center;
 }
 
 .pcard__chip {
-  box-sizing: border-box;
-  height: 21px;
-  padding: 0 10px 0 3px;
+  height: 32px;
+  padding: 0 12px 0 6px;
   display: flex;
   align-items: center;
-  gap: 5px;
-  border-radius: 5px;
+  gap: 8px;
+  border-radius: 8px;
   background: #404040;
   font-family: 'Gilroy', sans-serif;
-  font-size: 11px;
-  line-height: 12px;
-  letter-spacing: 0.11px;
-  color: #f6f6f6;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  color: #f2f2f2;
   white-space: nowrap;
 }
 
-.pcard__chip img {
-  display: block;
-}
-
 .pcard__people {
-  position: absolute;
-  left: 19px;
-  top: 326px;
-  display: flex;
-  gap: 7px;
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
 }
 
 .pcard__person {
   box-sizing: border-box;
-  height: 38px;
-  padding: 0 8px 0 7px;
+  height: 40px;
+  padding: 0 12px 0 5px;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   border: 1px solid #4d4d4d;
-  border-radius: 32px;
-  font-size: 12px;
-  line-height: 16px;
+  border-radius: 999px;
   color: #f2f2f2;
   white-space: nowrap;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .pcard,
-  .pcard__title,
-  .pcard__compact,
-  .pcard__detail {
+  .pcard__body,
+  .pcard__fold,
+  .pcard__summary-bar {
     transition: none;
   }
 }
 
-/* ---------- Tablets and phones (<1024px): natural flow ---------- */
-@media (max-width: 1023px) {
+/* ---------- Phones ---------- */
+@media (max-width: 640px) {
   .home {
-    padding: 40px 20px 60px;
+    padding-top: 40px;
   }
 
-  .home__toolbar {
-    flex-wrap: wrap;
-    gap: 12px;
+  .home__logo {
+    width: 96px;
+  }
+
+  .home__wordmark {
+    font-size: 48px;
+    line-height: 60px;
   }
 
   .home-search {
-    width: 100%;
+    flex-basis: 100%;
+    min-width: 0;
   }
 
   .home-filter {
-    flex: 1 1 160px;
-    width: auto;
-    white-space: nowrap;
+    flex: 1 1 0;
+    min-width: 0;
   }
 
   .home__cards {
-    margin-top: 40px;
-    flex-wrap: wrap;
-    gap: 20px;
-  }
-}
-
-@media (max-width: 470px) {
-  .home__cards {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .add-card,
-  .pcard {
-    width: 100%;
-  }
-
-  .pcard__bar-group {
-    left: 206px;
-    right: 23px;
-    width: auto;
-  }
-
-  .pcard__bar-group .pbar {
-    width: calc(100% - 46px) !important;
-  }
-
-  .pcard__pct {
-    left: auto;
-    right: 0;
-  }
-
-  .pcard__meta-row {
-    width: calc(100% - 46px);
+    margin-top: 32px;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
   }
 
   .pcard__facts {
     gap: 12px;
-  }
-
-  .pcard__fact {
-    font-size: 16px;
-  }
-
-  .pcard__fact--credits {
-    min-width: 0;
-  }
-
-  .pcard__people {
-    right: 19px;
-    flex-wrap: wrap;
-  }
-
-  .pcard:is(:hover, :focus-visible):has(.pcard__person:nth-child(4)) {
-    height: 428px;
   }
 }

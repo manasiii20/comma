@@ -25,6 +25,9 @@ export function useFitToWindow(): CSSProperties | undefined {
 
   useLayoutEffect(() => {
     document.documentElement.style.overflow = style ? 'hidden' : ''
+    return () => {
+      document.documentElement.style.overflow = ''
+    }
   }, [style])
 
   return style
