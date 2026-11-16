@@ -6,7 +6,8 @@ export type ProjectSummary = {
   id: string
   name: string
   credits: number
-  stage: 'Testing' | 'Research'
+  // Current phase, shown on the resting card ("Testing", "Research", ...).
+  stage: string
   progress: number
   // Share of the bar that is filled, as drawn in Figma (it does not track `progress` exactly).
   barFill: number
@@ -17,7 +18,12 @@ export type ProjectSummary = {
   members: AvatarKey[]
   // Hash route of the project's dashboard, when it has one.
   href?: string
+  // Created from the Add Project form (stored in this browser) rather than built in.
+  custom?: boolean
 }
+
+export const priorityOptions = ['Urgent', 'High', 'Moderate', 'Low'] as const
+export const statusOptions = ['Not Started', 'In Progress', 'On Hold', 'Completed'] as const
 
 export const projects: ProjectSummary[] = [
   {
@@ -58,6 +64,8 @@ export const projects: ProjectSummary[] = [
     members: ['dhruv', 'aanya'],
   },
 ]
+
+export const memberKeys: AvatarKey[] = ['aanya', 'dhruv', 'shreya', 'krisha']
 
 export const memberNames: Record<AvatarKey, string> = {
   dhruv: 'Dhruv',

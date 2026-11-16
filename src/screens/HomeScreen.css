@@ -83,10 +83,10 @@
 
 .home__wordmark {
   position: relative;
-  font-size: 62px;
+  font-size: 52px;
   font-weight: 800;
   line-height: normal;
-  letter-spacing: -0.62px;
+  letter-spacing: -0.52px;
   color: #f6f6f6;
 }
 
@@ -178,7 +178,7 @@
 .add-card,
 .pcard-slot {
   flex-shrink: 0;
-  width: 460px;
+  width: 480px;
   height: 126px;
 }
 
@@ -199,37 +199,10 @@
   transition: background 0.15s;
 }
 
-/* 14px dashes with 16px gaps, as in the Figma file (CSS dashed borders cannot set the pattern). */
-.add-card__border {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-  pointer-events: none;
-}
-
-.add-card__border rect {
-  x: 0.375px;
-  y: 0.375px;
-  width: calc(100% - 0.75px);
-  height: calc(100% - 0.75px);
-  rx: 19.6px;
-  fill: none;
-  stroke: #808080;
-  stroke-width: 0.75px;
-  stroke-dasharray: 14 16;
-  stroke-dashoffset: 7;
-  transition: stroke 0.15s;
-}
-
 .add-card:hover {
   background: #383838;
 }
 
-.add-card:hover .add-card__border rect {
-  stroke: #a6a6a6;
-}
 
 /*
   The slot holds the resting size; the card grows over whatever is below it.
@@ -420,6 +393,33 @@
   transition-delay: 265ms;
 }
 
+.pcard:is(:hover, :focus-visible) .pcard__reveal:nth-child(5) {
+  transition-delay: 310ms;
+}
+
+.pcard__steps--empty {
+  display: none;
+}
+
+.pcard__actions {
+  margin-top: 20px;
+  display: flex;
+}
+
+.pcard__delete {
+  height: 32px;
+  padding: 0 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  line-height: 20px;
+  color: #f58a8a;
+  transition: background 0.15s;
+}
+
+.pcard__delete:hover {
+  background: rgba(245, 87, 87, 0.12);
+}
+
 .pcard__progress {
   box-sizing: border-box;
   align-self: flex-start;
@@ -444,11 +444,11 @@
 
 /* Step list with a tree rail that starts under the progress pill's check icon (x = 19px). */
 .pcard__steps {
-  margin-top: 10px;
+  margin-top: 14px;
   padding-left: 36px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
 }
 
 .pcard__step {
@@ -467,9 +467,9 @@
   content: '';
   position: absolute;
   left: -17px;
-  top: -10px;
+  top: -14px;
   width: 12px;
-  height: 24px;
+  height: 28px;
   border-left: 1px solid #5c5c5c;
   border-bottom: 1px solid #5c5c5c;
   border-bottom-left-radius: 6px;
@@ -480,7 +480,7 @@
   position: absolute;
   left: -17px;
   top: 14px;
-  height: 18px;
+  height: 20px;
   border-left: 1px solid #5c5c5c;
 }
 
@@ -498,10 +498,10 @@
 }
 
 .pcard__props {
-  margin-top: 20px;
+  margin-top: 26px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
 .pcard__prop {
@@ -544,16 +544,16 @@
 }
 
 .pcard__people {
-  margin-top: 20px;
+  margin-top: 26px;
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 8px;
 }
 
 .pcard__person {
   box-sizing: border-box;
   height: 36px;
-  padding: 0 10px 0 4px;
+  padding: 0 12px 0 4px;
   display: flex;
   align-items: center;
   gap: 6px;

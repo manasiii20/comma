@@ -2,6 +2,8 @@ import { useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode }
 import { Avatar } from '../components/Avatar'
 import { Icon } from '../components/Icon'
 import { useFitToWindow } from '../hooks/useFitToWindow'
+import { usePersistentState } from '../hooks/usePersistentState'
+import { AddProjectDialog } from '../components/AddProjectDialog'
 import { memberNames, projects, type ProjectSummary } from '../data/projects'
 import logo from '../assets/figma/logo.png'
 import searchIcon from '../assets/figma/home/search.svg'
@@ -18,14 +20,25 @@ import chevron from '../assets/figma/home/chevron.svg'
 import statusSmall from '../assets/figma/home/status-small.svg'
 import './HomeScreen.css'
 
-const stageIcons = { Testing: stageTesting, Research: stageResearch }
+const stageIcon = (stage: string) => (stage === 'Testing' ? stageTesting : stageResearch)
 const flagIcons = { thin: flagThin, bold: flagBold }
 
 export default function HomeScreen() {
   const fitStyle = useFitToWindow()
   const [query, setQuery] = useState('')
+  const [adding, setAdding] = useState(false)
+  // Projects made with Add Project live in this browser's storage, newest first.
+  const [created, setCreated] = usePersistentState<ProjectSummary[]>('comma.projects', [])
   const q = query.trim().toLowerCase()
-  const visible = projects.filter((p) => p.name.toLowerCase().includes(q))
+  const visible = [...created, ...projects].filter((p) => p.name.toLowerCase().includes(q))
+
+  const createProject = (project: ProjectSummary) => {
+    setCreated((prev) => [project, ...prev])
+    setQuery('')
+    setAdding(false)
+  }
+
+  const deleteProject = (id: string) => setCreated((prev) => prev.filter((p) => p.id !== id))
 
   return (
     <div className={`home${fitStyle ? ' home--fit' : ''}`} style={fitStyle}>
@@ -63,22 +76,21 @@ export default function HomeScreen() {
       </div>
 
       <div className="home__cards">
-        <button className="add-card" type="button">
-          <svg className="add-card__border" aria-hidden="true">
-            <rect />
-          </svg>
+        <button className="add-card" type="button" onClick={() => setAdding(true)} aria-haspopup="dialog">
           <img src={addPlus} alt="" width={38} height={38} />
           <span>Add Project</span>
         </button>
         {visible.map((p) => (
-          <ProjectCard key={p.id} project={p} />
+          <ProjectCard key={p.id} project={p} onDelete={p.custom ? () => deleteProject(p.id) : undefined} />
         ))}
       </div>
+
+      <AddProjectDialog open={adding} onClose={() => setAdding(false)} onCreate={createProject} />
     </div>
   )
 }
 
-function ProjectCard({ project: p }: { project: ProjectSummary }) {
+function ProjectCard({ project: p, onDelete }: { project: ProjectSummary; onDelete?: () => void }) {
   const doneCount = p.steps.filter((s) => s.done).length
   const openHeight = useOpenHeight()
 
@@ -99,7 +111,7 @@ function ProjectCard({ project: p }: { project: ProjectSummary }) {
             {p.credits} credits
           </span>
           <span className="pcard__fact">
-            <img src={stageIcons[p.stage]} alt="" width={14} height={14} />
+            <img src={stageIcon(p.stage)} alt="" width={14} height={14} />
             {p.stage}
           </span>
         </span>
@@ -113,14 +125,12 @@ function ProjectCard({ project: p }: { project: ProjectSummary }) {
       <span className="pcard__detail" ref={openHeight.detailRef}>
         <span className="pcard__progress pcard__reveal">
           <img src={checkCircle} alt="" width={20} height={20} />
-          <span className="pcard__count">
-            {doneCount} of {p.steps.length}
-          </span>
+          <span className="pcard__count">{p.steps.length ? `${doneCount} of ${p.steps.length}` : 'No steps yet'}</span>
           <Bar fill={p.barFill} />
           <span className="pcard__pct">{p.progress}%</span>
         </span>
 
-        <span className="pcard__steps pcard__reveal">
+        <span className={`pcard__steps pcard__reveal${p.steps.length ? '' : ' pcard__steps--empty'}`}>
           {p.steps.map((s) => (
             <span key={s.label} className={`pcard__step${s.done ? ' pcard__step--done' : ''}`}>
               {s.done ? <img src={checkCircle} alt="" width={18} height={18} /> : <span className="pcard__step-dot" />}
@@ -142,6 +152,20 @@ function ProjectCard({ project: p }: { project: ProjectSummary }) {
             </span>
           ))}
         </span>
+
+        {onDelete && (
+          <span className="pcard__actions pcard__reveal">
+            <button
+              type="button"
+              className="pcard__delete"
+              onClick={() => {
+                if (window.confirm(`Delete "${p.name}"?`)) onDelete()
+              }}
+            >
+              Delete project
+            </button>
+          </span>
+        )}
       </span>
     </>
   )
