@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type FormEvent, type KeyboardEvent } from 'react'
 import { Avatar } from './Avatar'
+import { Dropdown } from './Dropdown'
 import {
   memberKeys,
   memberNames,
@@ -159,22 +160,14 @@ export function AddProjectDialog({ open, onClose, onCreate }: Props) {
         </div>
 
         <div className="add-dialog__row">
-          <label className="add-field">
+          <div className="add-field">
             <span className="add-field__label">Priority</span>
-            <select className="add-field__input add-field__select" value={priority} onChange={(e) => setPriority(e.target.value)}>
-              {priorityOptions.map((o) => (
-                <option key={o}>{o}</option>
-              ))}
-            </select>
-          </label>
-          <label className="add-field">
+            <Dropdown variant="field" label="Priority" value={priority} options={priorityOptions} onChange={setPriority} />
+          </div>
+          <div className="add-field">
             <span className="add-field__label">Status</span>
-            <select className="add-field__input add-field__select" value={status} onChange={(e) => setStatus(e.target.value)}>
-              {statusOptions.map((o) => (
-                <option key={o}>{o}</option>
-              ))}
-            </select>
-          </label>
+            <Dropdown variant="field" label="Status" value={status} options={statusOptions} onChange={setStatus} />
+          </div>
         </div>
 
         <fieldset className="add-field">

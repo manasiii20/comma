@@ -178,7 +178,7 @@
 .add-card,
 .pcard-slot {
   flex-shrink: 0;
-  width: 480px;
+  width: 512px;
   height: 126px;
 }
 
@@ -214,6 +214,15 @@
   position: relative;
 }
 
+.pcard--link {
+  cursor: pointer;
+}
+
+/* While a Priority/Status menu is open the card stays open and lets the menu hang past its edge. */
+.pcard--pinned {
+  overflow: visible;
+}
+
 .pcard {
   --open-ease: cubic-bezier(0.22, 1, 0.36, 1);
 
@@ -234,7 +243,7 @@
   transition: height 0.3s var(--open-ease), box-shadow 0.3s ease, background 0.3s ease;
 }
 
-.pcard:is(:hover, :focus-visible) {
+.pcard:is(:hover, :focus-visible, :has(:focus-visible), .pcard--pinned) {
   z-index: 2;
   height: var(--open-h, auto);
   background: #353535;
@@ -276,7 +285,7 @@
   transition: opacity 0.22s ease 0.08s;
 }
 
-.pcard:is(:hover, :focus-visible) :is(.pcard__summary-bar, .pcard__summary) {
+.pcard:is(:hover, :focus-visible, :has(:focus-visible), .pcard--pinned) :is(.pcard__summary-bar, .pcard__summary) {
   opacity: 0;
   transition: opacity 0.14s ease 70ms;
 }
@@ -358,7 +367,7 @@
   position: absolute;
   top: 72px;
   left: 24px;
-  right: 30px;
+  right: 24px;
   display: flex;
   flex-direction: column;
   font-size: 16px;
@@ -371,29 +380,29 @@
   transition: opacity 0.12s ease, transform 0.12s ease;
 }
 
-.pcard:is(:hover, :focus-visible) .pcard__reveal {
+.pcard:is(:hover, :focus-visible, :has(:focus-visible), .pcard--pinned) .pcard__reveal {
   opacity: 1;
   transform: none;
   transition: opacity 0.3s ease, transform 0.36s var(--open-ease);
 }
 
-.pcard:is(:hover, :focus-visible) .pcard__reveal:nth-child(1) {
+.pcard:is(:hover, :focus-visible, :has(:focus-visible), .pcard--pinned) .pcard__reveal:nth-child(1) {
   transition-delay: 130ms;
 }
 
-.pcard:is(:hover, :focus-visible) .pcard__reveal:nth-child(2) {
+.pcard:is(:hover, :focus-visible, :has(:focus-visible), .pcard--pinned) .pcard__reveal:nth-child(2) {
   transition-delay: 175ms;
 }
 
-.pcard:is(:hover, :focus-visible) .pcard__reveal:nth-child(3) {
+.pcard:is(:hover, :focus-visible, :has(:focus-visible), .pcard--pinned) .pcard__reveal:nth-child(3) {
   transition-delay: 220ms;
 }
 
-.pcard:is(:hover, :focus-visible) .pcard__reveal:nth-child(4) {
+.pcard:is(:hover, :focus-visible, :has(:focus-visible), .pcard--pinned) .pcard__reveal:nth-child(4) {
   transition-delay: 265ms;
 }
 
-.pcard:is(:hover, :focus-visible) .pcard__reveal:nth-child(5) {
+.pcard:is(:hover, :focus-visible, :has(:focus-visible), .pcard--pinned) .pcard__reveal:nth-child(5) {
   transition-delay: 310ms;
 }
 
@@ -402,18 +411,37 @@
 }
 
 .pcard__actions {
-  margin-top: 20px;
+  margin-top: 24px;
   display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.pcard__open,
+.pcard__delete {
+  height: 36px;
+  padding: 0 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 9px;
+  font-size: 16px;
+  line-height: 24px;
+  transition: background 0.15s, color 0.15s;
+}
+
+.pcard__open {
+  margin-left: -12px;
+  color: #f2f2f2;
+}
+
+.pcard__open:hover {
+  background: #404040;
 }
 
 .pcard__delete {
-  height: 32px;
-  padding: 0 12px;
-  border-radius: 8px;
-  font-size: 14px;
-  line-height: 20px;
+  margin-right: -12px;
   color: #f58a8a;
-  transition: background 0.15s;
 }
 
 .pcard__delete:hover {
@@ -510,38 +538,15 @@
 }
 
 .pcard__prop-label {
-  width: 100px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  width: 88px;
+  flex-shrink: 0;
   font-family: 'Gilroy', sans-serif;
   color: #b3b3b3;
 }
 
-.pcard__prop-icon {
-  width: 14px;
-  display: grid;
-  place-items: center;
-}
 
-.pcard__chip {
-  height: 30px;
-  padding: 0 12px 0 6px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  border-radius: 7px;
-  background: #404040;
-  font-family: 'Gilroy', sans-serif;
-  font-weight: 500;
-  color: #f2f2f2;
-  white-space: nowrap;
-}
 
-.pcard__chip img {
-  width: 18px;
-  height: 18px;
-}
+
 
 .pcard__people {
   margin-top: 26px;
@@ -552,26 +557,26 @@
 
 .pcard__person {
   box-sizing: border-box;
-  height: 36px;
-  padding: 0 12px 0 4px;
+  height: 40px;
+  padding: 0 14px 0 4px;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   border: 1px solid #4d4d4d;
   border-radius: 999px;
-  font-size: 14px;
-  line-height: 20px;
+  font-size: 16px;
+  line-height: 24px;
   color: #f2f2f2;
   white-space: nowrap;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .pcard,
-  .pcard:is(:hover, :focus-visible),
+  .pcard:is(:hover, :focus-visible, :has(:focus-visible), .pcard--pinned),
   .pcard__summary,
   .pcard__summary-bar,
   .pcard__reveal,
-  .pcard:is(:hover, :focus-visible) :is(.pcard__summary-bar, .pcard__summary, .pcard__reveal) {
+  .pcard:is(:hover, :focus-visible, :has(:focus-visible), .pcard--pinned) :is(.pcard__summary-bar, .pcard__summary, .pcard__reveal) {
     transition: none;
   }
 }

@@ -1,0 +1,162 @@
+/* Dropdown: dark, soft and rounded to match the cards. "chip" sits inside project cards, "field" in forms. */
+.dd {
+  position: relative;
+  display: inline-flex;
+}
+
+.dd :where(button) {
+  font: inherit;
+  color: inherit;
+  margin: 0;
+  border: none;
+  cursor: pointer;
+}
+
+.dd .dd__button {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  transition: background 0.15s, box-shadow 0.15s;
+}
+
+.dd__chevron {
+  flex-shrink: 0;
+  color: #b3b3b3;
+  transition: transform 0.18s ease;
+}
+
+.dd--open .dd__chevron {
+  transform: rotate(180deg);
+}
+
+/* Chip: Figma's dark chevron square on the left, then the value. */
+.dd--chip .dd__button {
+  position: relative;
+  height: 36px;
+  padding: 0 14px 0 36px;
+  border-radius: 9px;
+  background: #404040;
+  font-family: 'Gilroy', sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  color: #f2f2f2;
+}
+
+.dd--chip .dd__chevron-box {
+  position: absolute;
+  left: 6px;
+  top: 6px;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  background: #262626;
+}
+
+.dd--chip .dd__chevron {
+  position: absolute;
+  left: 12px;
+  top: 14px;
+  width: 12px;
+  height: 8px;
+}
+
+.dd--chip .dd__button:hover,
+.dd--chip.dd--open .dd__button {
+  background: #4a4a4a;
+}
+
+/* Field: full-width form control. */
+.dd--field {
+  display: flex;
+  width: 100%;
+}
+
+.dd--field .dd__button {
+  box-sizing: border-box;
+  width: 100%;
+  height: 48px;
+  padding: 0 16px;
+  justify-content: space-between;
+  gap: 12px;
+  border-radius: 12px;
+  background: #404040;
+  font-size: 18px;
+  line-height: 24px;
+  color: #f2f2f2;
+  text-align: left;
+}
+
+.dd--field .dd__button:hover {
+  background: #474747;
+}
+
+.dd--field.dd--open .dd__button {
+  box-shadow: inset 0 0 0 1px #7a7a7a;
+}
+
+/* Menu */
+.dd__menu {
+  position: absolute;
+  left: 0;
+  top: calc(100% + 6px);
+  z-index: 20;
+  box-sizing: border-box;
+  min-width: max(100%, 184px);
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  border: 1px solid #454545;
+  border-radius: 12px;
+  background: #262626;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.32);
+  animation: dd-in 0.16s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes dd-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+.dd__option {
+  height: 36px;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border-radius: 8px;
+  font-family: 'Gilroy', sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  color: #c7c7c7;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.dd--field .dd__option {
+  height: 40px;
+  font-family: 'Garet', sans-serif;
+  font-size: 18px;
+}
+
+.dd__option[aria-selected='true'] {
+  color: #f2f2f2;
+}
+
+.dd__option--active {
+  background: #383838;
+  color: #f2f2f2;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dd__menu {
+    animation: none;
+  }
+
+  .dd__chevron {
+    transition: none;
+  }
+}
