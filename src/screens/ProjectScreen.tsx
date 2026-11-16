@@ -227,13 +227,12 @@ export default function ProjectScreen({ view = 'overview' }: { view?: ProjectVie
                   href={viewHref(item.view)}
                   aria-label={item.label}
                   data-tip={item.label}
-                  data-tip-side="right"
                   aria-current={active ? 'page' : undefined}
                 >
                   {icon}
                 </a>
               ) : (
-                <button key={item.id} className={className} aria-label={item.label} data-tip={item.label} data-tip-detail="Coming soon" data-tip-side="right">
+                <button key={item.id} className={className} aria-label={item.label} data-tip={item.label} data-tip-detail="Coming soon">
                   {icon}
                 </button>
               )
@@ -241,7 +240,7 @@ export default function ProjectScreen({ view = 'overview' }: { view?: ProjectVie
           </nav>
         </div>
         <div className="sidebar__bottom">
-          <a className="nav-item" href="#/" aria-label="Log out" data-tip="Log out" data-tip-detail="Back to all projects" data-tip-side="right">
+          <a className="nav-item" href="#/" aria-label="Log out" data-tip="Log out" data-tip-detail="Back to all projects">
             <SvgIcon svg={navLogout} width={24} height={24} />
           </a>
           <img className="sidebar__avatar" src={avatarAanya} alt={user.name} />

@@ -1,93 +1,124 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import './TooltipLayer.css'
 
-type Tip = { title: string; detail?: string; x: number; y: number; side: 'top' | 'bottom' | 'right' }
+type Tip = { title: string; detail?: string }
+type Point = { x: number; y: number }
 
-const SHOW_DELAY = 280
-const GAP = 10
+const SHOW_DELAY = 180
+const OFFSET = { x: 14, y: 18 }
+const EDGE = 8
 
 /*
-  One tooltip for the whole app. Any element with data-tip="Title" (and optionally
-  data-tip-detail="More text", data-tip-side="right") shows it on hover or keyboard focus.
-  Rendered in <body>, outside the scaled layout, so it never gets clipped by a card.
+  A cursor label, like the name tags on collaborators' cursors in Figma. Any element with
+  data-tip="Title" (and optionally data-tip-detail="More text") shows it while the pointer is
+  over it; the label follows the pointer. With keyboard focus it sits just under the element.
+  Rendered in <body>, outside the scaled layout, so no card can clip it.
 */
 export function TooltipLayer() {
   const [tip, setTip] = useState<Tip | null>(null)
+  const [point, setPoint] = useState<Point>({ x: 0, y: 0 })
+  const [flip, setFlip] = useState({ x: false, y: false })
+  const labelRef = useRef<HTMLDivElement>(null)
   const current = useRef<Element | null>(null)
   const timer = useRef<number | undefined>(undefined)
-  const lastHide = useRef(0)
+  const frame = useRef<number | undefined>(undefined)
+  const pointer = useRef<Point>({ x: 0, y: 0 })
 
   useEffect(() => {
-    const place = (el: Element): Tip | null => {
+    const read = (el: Element): Tip | null => {
       const title = el.getAttribute('data-tip')
-      if (!title) return null
-      const r = el.getBoundingClientRect()
-      const wanted = (el.getAttribute('data-tip-side') as Tip['side']) || 'top'
-      const side = wanted === 'top' && r.top < 72 ? 'bottom' : wanted
-      if (side === 'right') return { title, detail: el.getAttribute('data-tip-detail') ?? undefined, side, x: r.right + GAP, y: r.top + r.height / 2 }
-      return {
-        title,
-        detail: el.getAttribute('data-tip-detail') ?? undefined,
-        side,
-        x: r.left + r.width / 2,
-        y: side === 'top' ? r.top - GAP : r.bottom + GAP,
-      }
+      return title ? { title, detail: el.getAttribute('data-tip-detail') || undefined } : null
     }
 
-    const show = (el: Element) => {
+    const show = (el: Element, at: () => Point) => {
       if (current.current === el) return
       current.current = el
       window.clearTimeout(timer.current)
-      // Moving straight from one tip to the next shows it at once, like native tooltips.
-      const delay = Date.now() - lastHide.current < 400 ? 0 : SHOW_DELAY
-      timer.current = window.setTimeout(() => setTip(place(el)), delay)
+      timer.current = window.setTimeout(() => {
+        setPoint(at())
+        setTip(read(el))
+      }, SHOW_DELAY)
     }
 
     const hide = () => {
       window.clearTimeout(timer.current)
-      if (current.current) lastHide.current = Date.now()
       current.current = null
       setTip(null)
     }
 
-    const onOver = (e: Event) => {
+    const onMove = (e: PointerEvent) => {
+      pointer.current = { x: e.clientX, y: e.clientY }
       const el = (e.target as Element).closest?.('[data-tip]')
-      if (el) show(el)
-      else if (current.current) hide()
-    }
-    const onOut = (e: PointerEvent) => {
-      if (current.current && !current.current.contains(e.relatedTarget as Node)) hide()
-    }
-    const onFocus = (e: FocusEvent) => {
-      const el = (e.target as Element).closest?.('[data-tip]')
-      if (el && (e.target as Element).matches(':focus-visible')) show(el)
+      if (!el) {
+        if (current.current) hide()
+        return
+      }
+      if (el !== current.current) show(el, () => pointer.current)
+      // Follow the pointer, at most once per frame.
+      if (frame.current === undefined) {
+        frame.current = requestAnimationFrame(() => {
+          frame.current = undefined
+          setPoint(pointer.current)
+        })
+      }
     }
 
-    document.addEventListener('pointerover', onOver)
-    document.addEventListener('pointerout', onOut)
+    const onFocus = (e: FocusEvent) => {
+      const target = e.target as Element
+      const el = target.closest?.('[data-tip]')
+      if (!el || !target.matches(':focus-visible')) return
+      show(el, () => {
+        const r = el.getBoundingClientRect()
+        return { x: r.left + Math.min(24, r.width / 2) - OFFSET.x, y: r.bottom - OFFSET.y + 6 }
+      })
+    }
+
+    document.addEventListener('pointermove', onMove)
+    document.addEventListener('pointerleave', hide)
     document.addEventListener('focusin', onFocus)
     document.addEventListener('focusout', hide)
     document.addEventListener('pointerdown', hide)
     window.addEventListener('scroll', hide, true)
     window.addEventListener('hashchange', hide)
+    window.addEventListener('blur', hide)
     return () => {
       window.clearTimeout(timer.current)
-      document.removeEventListener('pointerover', onOver)
-      document.removeEventListener('pointerout', onOut)
+      if (frame.current !== undefined) cancelAnimationFrame(frame.current)
+      document.removeEventListener('pointermove', onMove)
+      document.removeEventListener('pointerleave', hide)
       document.removeEventListener('focusin', onFocus)
       document.removeEventListener('focusout', hide)
       document.removeEventListener('pointerdown', hide)
       window.removeEventListener('scroll', hide, true)
       window.removeEventListener('hashchange', hide)
+      window.removeEventListener('blur', hide)
     }
   }, [])
 
+  // Near the right or bottom edge, put the label on the other side of the cursor.
+  useLayoutEffect(() => {
+    const el = labelRef.current
+    if (!el) return
+    const { width, height } = el.getBoundingClientRect()
+    setFlip({
+      x: point.x + OFFSET.x + width > window.innerWidth - EDGE,
+      y: point.y + OFFSET.y + height > window.innerHeight - EDGE,
+    })
+  }, [point, tip])
+
   if (!tip) return null
+  const left = flip.x ? point.x - OFFSET.x / 2 : point.x + OFFSET.x
+  const top = flip.y ? point.y - OFFSET.y / 2 : point.y + OFFSET.y
   return createPortal(
-    <div className={`tip tip--${tip.side}`} role="tooltip" style={{ left: tip.x, top: tip.y }}>
-      <span className="tip__title">{tip.title}</span>
-      {tip.detail && <span className="tip__detail">{tip.detail}</span>}
+    <div
+      ref={labelRef}
+      className={`cursor-tip${flip.x ? ' cursor-tip--left' : ''}${flip.y ? ' cursor-tip--up' : ''}`}
+      role="tooltip"
+      style={{ left, top }}
+    >
+      <span className="cursor-tip__title">{tip.title}</span>
+      {tip.detail && <span className="cursor-tip__detail">{tip.detail}</span>}
     </div>,
     document.body,
   )

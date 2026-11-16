@@ -289,10 +289,11 @@
   On windows wider than 16:9 the layout grows sideways. That extra width goes partly into wider
   gaps between cards and partly to Activity, so Dashboard Overview doesn't stretch the most.
   At the 1920x1080 design size these resolve to Figma's 30px gap and 681 / 505 split.
+  The same gap is used between the two rows, so spacing is equal in both directions.
 */
 .header,
 .row {
-  --card-gap: clamp(30px, calc(30px + (100cqw - 1217px) * 0.1), 52px);
+  --card-gap: clamp(30px, calc(30px + (100cqw - 1217px) * 0.03), 44px);
   --top-cols: minmax(0, 1fr)
     minmax(0, calc((100cqw - var(--card-gap)) * 0.4258 + max(0px, (100cqw - 1217px) * 0.25)));
 }
@@ -304,7 +305,7 @@
 
 .row--top {
   grid-template-columns: var(--top-cols);
-  margin-bottom: var(--gap);
+  margin-bottom: var(--card-gap);
 }
 
 .row--bottom {
