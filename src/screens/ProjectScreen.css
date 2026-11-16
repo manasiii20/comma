@@ -121,7 +121,36 @@
   display: block;
   line-height: 0;
   border-radius: 8px;
-  transition: opacity 0.15s, transform 0.15s;
+}
+
+.svg-icon {
+  display: block;
+  flex-shrink: 0;
+}
+
+.svg-icon svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* Hover only thickens the icon: outline icons get a heavier stroke, filled ones a thin matching outline. */
+.nav-item .svg-icon :is(path, circle, rect, line) {
+  transition: stroke-width 0.15s ease;
+}
+
+.nav-item .svg-icon [fill='#E6E6E6'] {
+  stroke: #e6e6e6;
+  stroke-width: 0;
+}
+
+.nav-item:hover .svg-icon [stroke='#E6E6E6'] {
+  stroke-width: 1.7;
+}
+
+.nav-item:hover .svg-icon [fill='#E6E6E6'] {
+  stroke-width: 0.8;
 }
 
 .sidebar__nav .nav-item:not(.nav-item--active),
@@ -129,11 +158,7 @@
   opacity: 0.85;
 }
 
-.sidebar__nav .nav-item:not(.nav-item--active):hover,
-.sidebar__bottom .nav-item:hover {
-  opacity: 1;
-  transform: scale(1.08);
-}
+
 
 /* The current view sits in Figma's 60x60 dark rounded box. */
 .sidebar__nav .nav-item--active {
@@ -936,9 +961,11 @@
   min-height: 0;
   overflow-y: auto;
   scrollbar-width: none;
-  padding: 45px 22px 22px;
+  /* Content is centred so the space above the avatar matches the space below the last card. */
+  padding: 24px 22px;
   display: flex;
   flex-direction: column;
+  justify-content: safe center;
   gap: 27px;
   border-radius: 30px;
   background: #383838;
@@ -1128,7 +1155,7 @@
 }
 
 .standard__note {
-  font-size: 14px;
+  font-size: 13px;
   line-height: normal;
   color: #d9d9d9;
 }

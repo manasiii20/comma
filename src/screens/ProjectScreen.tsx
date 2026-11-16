@@ -1,6 +1,7 @@
 ﻿import { useRef, useState, type CSSProperties, type KeyboardEvent } from 'react'
 import { Avatar } from '../components/Avatar'
 import { Icon } from '../components/Icon'
+import { SvgIcon } from '../components/SvgIcon'
 import { usePersistentState } from '../hooks/usePersistentState'
 import { useFitToWindow } from '../hooks/useFitToWindow'
 import {
@@ -18,15 +19,15 @@ import {
 } from '../data/project'
 import logo from '../assets/figma/logo.png'
 import avatarAanya from '../assets/figma/avatar-aanya.png'
-import navBookPlain from '../assets/figma/nav-book-plain.svg'
+import navBookPlain from '../assets/figma/nav-book-plain.svg?raw'
 import calendarSmall from '../assets/figma/analysis/calendar-small.svg'
 import { mayloHealth } from '../data/analysis'
 import { AnalysisView } from './AnalysisView'
-import navFolder from '../assets/figma/nav-folder.svg'
-import navUsers from '../assets/figma/nav-users.svg'
-import navCalendar from '../assets/figma/nav-calendar.svg'
-import navChart from '../assets/figma/nav-chart.svg'
-import navLogout from '../assets/figma/nav-logout.svg'
+import navFolder from '../assets/figma/nav-folder.svg?raw'
+import navUsers from '../assets/figma/nav-users.svg?raw'
+import navCalendar from '../assets/figma/nav-calendar.svg?raw'
+import navChart from '../assets/figma/nav-chart.svg?raw'
+import navLogout from '../assets/figma/nav-logout.svg?raw'
 import searchIcon from '../assets/figma/search.svg'
 import ring78 from '../assets/figma/ring-78.svg'
 import modifyIcon from '../assets/figma/modify.svg'
@@ -195,7 +196,7 @@ export default function ProjectScreen({ view = 'overview' }: { view?: ProjectVie
             {navItems.map((item) => {
               const active = item.view === view
               const className = `nav-item nav-item--${item.id}${active ? ' nav-item--active' : ''}`
-              const icon = <Icon src={item.icon} width={item.w} height={item.h} />
+              const icon = <SvgIcon svg={item.icon} width={item.w} height={item.h} />
               return item.view ? (
                 <a
                   key={item.id}
@@ -216,9 +217,9 @@ export default function ProjectScreen({ view = 'overview' }: { view?: ProjectVie
           </nav>
         </div>
         <div className="sidebar__bottom">
-          <button className="nav-item" aria-label="Log out" title="Log out">
-            <Icon src={navLogout} width={24} />
-          </button>
+          <a className="nav-item" href="#/" aria-label="Log out" title="Log out">
+            <SvgIcon svg={navLogout} width={24} height={24} />
+          </a>
           <img className="sidebar__avatar" src={avatarAanya} alt={user.name} />
         </div>
       </aside>
