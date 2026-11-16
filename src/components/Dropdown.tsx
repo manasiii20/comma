@@ -1,17 +1,20 @@
-import { useEffect, useId, useRef, useState, type KeyboardEvent } from 'react'
+import { useEffect, useId, useRef, useState, type KeyboardEvent, type ReactNode } from 'react'
 import './Dropdown.css'
 
 type Props = {
   value: string
   options: readonly string[]
   onChange: (value: string) => void
-  // "chip" is the compact button inside project cards; "field" is the full-width form control.
-  variant?: 'chip' | 'field'
+  // "chip": compact button in project cards. "field": full-width form control.
+  // "toolbar": the large filter buttons on the home screen, with an icon box on the left.
+  variant?: 'chip' | 'field' | 'toolbar'
   label: string
   onOpenChange?: (open: boolean) => void
+  // Toolbar only: the icon shown in the dark box on the left.
+  icon?: ReactNode
 }
 
-export function Dropdown({ value, options, onChange, variant = 'chip', label, onOpenChange }: Props) {
+export function Dropdown({ value, options, onChange, variant = 'chip', label, onOpenChange, icon }: Props) {
   const [open, setOpen] = useState(false)
   const [active, setActive] = useState(() => Math.max(0, options.indexOf(value)))
   const rootRef = useRef<HTMLDivElement>(null)
@@ -73,7 +76,11 @@ export function Dropdown({ value, options, onChange, variant = 'chip', label, on
   }
 
   return (
-    <div className={`dd dd--${variant}${open ? ' dd--open' : ''}`} ref={rootRef} onKeyDown={onKeyDown}>
+    <div
+      className={`dd dd--${variant}${open ? ' dd--open' : ''}${value !== options[0] ? ' dd--active' : ''}`}
+      ref={rootRef}
+      onKeyDown={onKeyDown}
+    >
       <button
         ref={buttonRef}
         type="button"
@@ -85,6 +92,11 @@ export function Dropdown({ value, options, onChange, variant = 'chip', label, on
         onClick={() => setOpenState(!open)}
       >
         {variant === 'chip' && <span className="dd__chevron-box" aria-hidden="true" />}
+        {variant === 'toolbar' && (
+          <span className="dd__icon" aria-hidden="true">
+            {icon}
+          </span>
+        )}
         <span className="dd__value">{value}</span>
         <svg className="dd__chevron" width="12" height="8" viewBox="0 0 12 8" aria-hidden="true">
           <path d="M1 1.5l5 5 5-5" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />

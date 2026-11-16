@@ -160,3 +160,53 @@
     transition: none;
   }
 }
+
+/* Toolbar: the home screen's All Status / All Priority filters. */
+.dd--toolbar .dd__button {
+  box-sizing: border-box;
+  height: 55px;
+  padding: 7px 28px 7px 7px;
+  gap: 20px;
+  border-radius: 12px;
+  background: #404040;
+  font-size: 20px;
+  line-height: 28px;
+  letter-spacing: 0.2px;
+  color: #a6a6a6;
+}
+
+.dd--toolbar .dd__icon {
+  width: 41px;
+  height: 41px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background: #262626;
+}
+
+.dd--toolbar .dd__chevron {
+  margin-left: -4px;
+}
+
+.dd--toolbar .dd__button:hover,
+.dd--toolbar.dd--open .dd__button {
+  background: #4a4a4a;
+  color: #d9d9d9;
+}
+
+/* A filter that is set reads brighter than "All ...". */
+.dd--toolbar.dd--active .dd__button {
+  color: #f2f2f2;
+}
+
+.dd--toolbar .dd__menu {
+  min-width: max(100%, 220px);
+  top: calc(100% + 8px);
+}
+
+.dd--toolbar .dd__option {
+  height: 40px;
+  font-family: 'Garet', sans-serif;
+  font-size: 18px;
+}

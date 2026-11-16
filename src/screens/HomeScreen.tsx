@@ -22,6 +22,8 @@ const stageIcon = (stage: string) => (stage === 'Testing' ? stageTesting : stage
 const flagIcons = { thin: flagThin, bold: flagBold }
 
 const STORAGE_KEY = 'comma.projects.v2'
+const ALL_STATUS = 'All Status'
+const ALL_PRIORITY = 'All Priority'
 
 // First visit with this version: built-in projects, plus any made with the earlier Add Project form.
 function loadInitialProjects(): ProjectSummary[] {
@@ -39,12 +41,26 @@ export default function HomeScreen() {
   const [adding, setAdding] = useState(false)
   // Every project (built-in and created) lives in this browser's storage, so edits and deletions stick.
   const [list, setList] = usePersistentState<ProjectSummary[]>(STORAGE_KEY, loadInitialProjects)
+  const [statusFilter, setStatusFilter] = useState<string>(ALL_STATUS)
+  const [priorityFilter, setPriorityFilter] = useState<string>(ALL_PRIORITY)
   const q = query.trim().toLowerCase()
-  const visible = list.filter((p) => p.name.toLowerCase().includes(q))
+  const visible = list.filter(
+    (p) =>
+      p.name.toLowerCase().includes(q) &&
+      (statusFilter === ALL_STATUS || p.status === statusFilter) &&
+      (priorityFilter === ALL_PRIORITY || p.priority === priorityFilter),
+  )
+  const filtering = !!q || statusFilter !== ALL_STATUS || priorityFilter !== ALL_PRIORITY
+
+  const clearFilters = () => {
+    setQuery('')
+    setStatusFilter(ALL_STATUS)
+    setPriorityFilter(ALL_PRIORITY)
+  }
 
   const createProject = (project: ProjectSummary) => {
     setList((prev) => [project, ...prev])
-    setQuery('')
+    clearFilters()
     setAdding(false)
   }
 
@@ -76,16 +92,22 @@ export default function HomeScreen() {
             aria-label="Search projects"
           />
         </label>
-        <button className="home-filter" type="button">
-          <img src={filterIcon} alt="" width={41} height={41} />
-          <span>All Status</span>
-        </button>
-        <button className="home-filter" type="button">
-          <span className="home-filter__icon">
-            <Icon src={priorityIcon} width={17} height={21} />
-          </span>
-          <span>All Priority</span>
-        </button>
+        <Dropdown
+          variant="toolbar"
+          label="Filter by status"
+          value={statusFilter}
+          options={[ALL_STATUS, ...statusOptions]}
+          onChange={setStatusFilter}
+          icon={<img src={filterIcon} alt="" width={41} height={41} />}
+        />
+        <Dropdown
+          variant="toolbar"
+          label="Filter by priority"
+          value={priorityFilter}
+          options={[ALL_PRIORITY, ...priorityOptions]}
+          onChange={setPriorityFilter}
+          icon={<Icon src={priorityIcon} width={17} height={21} />}
+        />
       </div>
 
       <div className="home__cards">
@@ -101,6 +123,14 @@ export default function HomeScreen() {
             onDelete={() => deleteProject(p.id)}
           />
         ))}
+        {filtering && visible.length === 0 && (
+          <div className="home__empty">
+            <p>No projects match these filters.</p>
+            <button type="button" onClick={clearFilters}>
+              Clear filters
+            </button>
+          </div>
+        )}
       </div>
 
       <AddProjectDialog open={adding} onClose={() => setAdding(false)} onCreate={createProject} />

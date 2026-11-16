@@ -99,8 +99,7 @@
   gap: 18px;
 }
 
-.home-search,
-.home-filter {
+.home-search {
   box-sizing: border-box;
   height: 55px;
   padding: 7px;
@@ -127,8 +126,7 @@
   box-shadow: 0 0 0 1px #6b6b6b;
 }
 
-.home-search__icon,
-.home-filter__icon {
+.home-search__icon {
   width: 41px;
   height: 41px;
   display: grid;
@@ -156,14 +154,30 @@
   filter: invert(0.6);
 }
 
-.home-filter {
-  padding-right: 24px;
-  transition: background 0.15s, color 0.15s;
+.home__empty {
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 8px 16px;
+  font-size: 20px;
+  line-height: 28px;
+  color: #b3b3b3;
 }
 
-.home-filter:hover {
+.home__empty button {
+  height: 40px;
+  padding: 0 16px;
+  border-radius: 10px;
+  background: #404040;
+  font-size: 18px;
+  color: #f2f2f2;
+  transition: background 0.15s;
+}
+
+.home__empty button:hover {
   background: #4a4a4a;
-  color: #d9d9d9;
 }
 
 /* ---------- Cards ---------- */
@@ -219,7 +233,7 @@
 }
 
 /* While a Priority/Status menu is open the card stays open and lets the menu hang past its edge. */
-.pcard--pinned {
+.pcard.pcard--pinned {
   overflow: visible;
 }
 
@@ -414,7 +428,7 @@
   margin-top: 24px;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: flex-start;
 }
 
 .pcard__delete {
@@ -430,7 +444,7 @@
 }
 
 .pcard__delete {
-  margin-right: -12px;
+  margin-left: -12px;
   color: #f58a8a;
 }
 
@@ -528,10 +542,31 @@
 }
 
 .pcard__prop-label {
-  width: 88px;
+  width: 92px;
   flex-shrink: 0;
   font-family: 'Gilroy', sans-serif;
+  font-size: 18px;
+  line-height: 24px;
   color: #b3b3b3;
+}
+
+.pcard__prop .dd--chip .dd__button {
+  height: 40px;
+  padding-right: 16px;
+  font-size: 18px;
+}
+
+.pcard__prop .dd--chip .dd__chevron-box {
+  top: 8px;
+}
+
+.pcard__prop .dd--chip .dd__chevron {
+  top: 16px;
+}
+
+.pcard__prop .dd__option {
+  height: 38px;
+  font-size: 18px;
 }
 
 
@@ -581,8 +616,12 @@
     width: 100%;
   }
 
-  .home-filter {
+  .home__toolbar .dd--toolbar {
     flex: 1 1 0;
+  }
+
+  .home__toolbar .dd--toolbar .dd__button {
+    width: 100%;
   }
 
   .home__cards {
@@ -603,22 +642,18 @@
   }
 
   .home-search,
-  .home-filter {
+  .home__toolbar .dd--toolbar .dd__button {
     height: 48px;
-    padding: 4px;
+    padding: 4px 12px 4px 4px;
+    gap: 12px;
     font-size: 16px;
   }
 
   .home-search__icon,
-  .home-filter__icon,
-  .home-filter > img {
+  .home__toolbar .dd__icon,
+  .home__toolbar .dd__icon > img {
     width: 40px;
     height: 40px;
-  }
-
-  .home-filter {
-    gap: 12px;
-    padding-right: 12px;
   }
 
   .home__cards {
