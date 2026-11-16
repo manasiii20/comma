@@ -68,7 +68,7 @@
   display: block;
   width: 131px;
   height: 90px;
-  margin-bottom: -20px;
+  margin-bottom: -8px;
   overflow: hidden;
 }
 
@@ -414,10 +414,9 @@
   margin-top: 24px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
 }
 
-.pcard__open,
 .pcard__delete {
   height: 36px;
   padding: 0 12px;
@@ -428,15 +427,6 @@
   font-size: 16px;
   line-height: 24px;
   transition: background 0.15s, color 0.15s;
-}
-
-.pcard__open {
-  margin-left: -12px;
-  color: #f2f2f2;
-}
-
-.pcard__open:hover {
-  background: #404040;
 }
 
 .pcard__delete {
