@@ -3,9 +3,10 @@
   Layout follows Figma; text is never below 12px, matching the dashboard's legibility pass.
 */
 .analysis-top {
+  --card-gap: clamp(30px, calc(30px + (100cqw - 1217px) * 0.1), 52px);
   display: grid;
   grid-template-columns: minmax(0, 665fr) minmax(0, 521fr);
-  gap: var(--gap);
+  column-gap: var(--card-gap);
   margin-bottom: var(--gap);
 }
 

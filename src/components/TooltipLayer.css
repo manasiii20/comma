@@ -1,0 +1,82 @@
+.tip {
+  position: fixed;
+  z-index: 1000;
+  max-width: 240px;
+  padding: 8px 12px 9px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  border-radius: 10px;
+  background: #1e1e1e;
+  box-shadow: 0 0 0 1px #474747, 0 10px 24px rgba(0, 0, 0, 0.35);
+  font-family: 'Garet', sans-serif;
+  pointer-events: none;
+  animation: tip-in 0.14s ease-out;
+}
+
+.tip--top {
+  transform: translate(-50%, -100%);
+}
+
+.tip--bottom {
+  transform: translate(-50%, 0);
+}
+
+.tip--right {
+  transform: translate(0, -50%);
+}
+
+/* Small arrow pointing at the element. */
+.tip::after {
+  content: '';
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: #1e1e1e;
+  box-shadow: 1px 1px 0 0 #474747;
+}
+
+.tip--top::after {
+  left: calc(50% - 4px);
+  bottom: -4px;
+  transform: rotate(45deg);
+}
+
+.tip--bottom::after {
+  left: calc(50% - 4px);
+  top: -4px;
+  transform: rotate(225deg);
+}
+
+.tip--right::after {
+  left: -4px;
+  top: calc(50% - 4px);
+  transform: rotate(135deg);
+}
+
+.tip__title {
+  font-size: 13px;
+  line-height: 18px;
+  letter-spacing: 0.02em;
+  color: #f2f2f2;
+  white-space: nowrap;
+}
+
+.tip__detail {
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.01em;
+  color: #b3b3b3;
+}
+
+@keyframes tip-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tip {
+    animation: none;
+  }
+}

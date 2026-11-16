@@ -38,7 +38,9 @@ import qaAnalysis from '../assets/figma/qa-analysis.svg'
 import qaExport from '../assets/figma/qa-export.svg'
 import checkOn from '../assets/figma/check-on.svg'
 import plusIcon from '../assets/figma/plus.svg'
-import messageIcon from '../assets/figma/message.svg'
+import messageIcon from '../assets/icons/message.svg'
+import trashIcon from '../assets/icons/trash.svg'
+import { timeAgo, timeAgoLong } from '../utils/time'
 import palImage from '../assets/figma/pal.png'
 import textIcon from '../assets/figma/text-t.svg'
 import lockIcon from '../assets/figma/lock.svg'
@@ -94,6 +96,20 @@ const viewHref = (view: ProjectView) => (view === 'overview' ? PROJECT_ROUTE : `
 
 const newId = () => Math.random().toString(36).slice(2, 9)
 
+const memberNamesFull: Record<AvatarKey, string> = {
+  aanya: 'Aanya Arora',
+  shreya: 'Shreya Jain',
+  dhruv: 'Dhruv Shah',
+  krisha: 'Krisha Singh',
+}
+const memberLabel = (who: AvatarKey) => (who === 'aanya' ? `${memberNamesFull[who]} (you)` : memberNamesFull[who])
+
+const statusHints: Record<string, string> = {
+  Active: 'Available right now',
+  Away: 'Not at their desk',
+  Busy: 'Heads down, reply may be slow',
+}
+
 const trackPos = (i: number, count: number) => `calc(var(--track-l) + var(--track-w) * ${i / (count - 1)})`
 
 export default function ProjectScreen({ view = 'overview' }: { view?: ProjectView }) {
@@ -123,6 +139,13 @@ export default function ProjectScreen({ view = 'overview' }: { view?: ProjectVie
     if (!task) return
     setTasks((prev) => prev.map((t) => (t.id === id ? { ...t, done: !t.done } : t)))
     if (!task.done) logActivity('Task Completed', task.label)
+  }
+
+  const deleteTask = (id: string) => {
+    const task = tasks.find((t) => t.id === id)
+    if (!task) return
+    setTasks((prev) => prev.filter((t) => t.id !== id))
+    logActivity('Task Removed', task.label)
   }
 
   const startAddingTask = () => {
@@ -203,13 +226,14 @@ export default function ProjectScreen({ view = 'overview' }: { view?: ProjectVie
                   className={className}
                   href={viewHref(item.view)}
                   aria-label={item.label}
-                  title={item.label}
+                  data-tip={item.label}
+                  data-tip-side="right"
                   aria-current={active ? 'page' : undefined}
                 >
                   {icon}
                 </a>
               ) : (
-                <button key={item.id} className={className} aria-label={item.label} title={item.label}>
+                <button key={item.id} className={className} aria-label={item.label} data-tip={item.label} data-tip-detail="Coming soon" data-tip-side="right">
                   {icon}
                 </button>
               )
@@ -217,7 +241,7 @@ export default function ProjectScreen({ view = 'overview' }: { view?: ProjectVie
           </nav>
         </div>
         <div className="sidebar__bottom">
-          <a className="nav-item" href="#/" aria-label="Log out" title="Log out">
+          <a className="nav-item" href="#/" aria-label="Log out" data-tip="Log out" data-tip-detail="Back to all projects" data-tip-side="right">
             <SvgIcon svg={navLogout} width={24} height={24} />
           </a>
           <img className="sidebar__avatar" src={avatarAanya} alt={user.name} />
@@ -255,26 +279,27 @@ export default function ProjectScreen({ view = 'overview' }: { view?: ProjectVie
               <h2>Dashboard Overview</h2>
             </div>
             <div className="overview__stats">
-              <div className="stat">
+              <div className="stat" data-tip="Project progress" data-tip-detail={`${project.completion}% of the planned work is done`} tabIndex={0}>
                 <div className="ring">
                   <img src={ring78} alt="" />
                   <span>{project.completion}%</span>
                 </div>
               </div>
-              <div className="stat stat--number">
+              <div className="stat stat--number" data-tip="Time invested" data-tip-detail="Total hours the team has logged" tabIndex={0}>
                 <strong>{project.hoursSpent}</strong>
                 <span>hours spent working</span>
               </div>
-              <div className="stat stat--number">
+              <div className="stat stat--number" data-tip="Deadline" data-tip-detail="Days left until submission" tabIndex={0}>
                 <strong>{project.daysTillSubmission}</strong>
                 <span>days till submission</span>
               </div>
               <div className="stat stat--team">
                 <div className="team-grid">
-                  <Avatar who="dhruv" size={31} />
-                  <Avatar who="aanya" size={31} />
-                  <Avatar who="krisha" size={31} />
-                  <Avatar who="shreya" size={31} />
+                  {(['dhruv', 'aanya', 'krisha', 'shreya'] as const).map((who) => (
+                    <span key={who} className="tip-target" data-tip={memberLabel(who)}>
+                      <Avatar who={who} size={31} />
+                    </span>
+                  ))}
                 </div>
                 <span>Team Members</span>
               </div>
@@ -314,34 +339,44 @@ export default function ProjectScreen({ view = 'overview' }: { view?: ProjectVie
             <div className="activity__body">
               <ul className="activity__feed">
                 {activity.slice(0, 2).map((item) => (
-                  <li key={item.id} className="feed-item">
-                    <Avatar who={item.avatar} size={34} />
+                  <li
+                    key={item.id}
+                    className="feed-item"
+                    data-tip={item.title}
+                    data-tip-detail={[item.detail, timeAgoLong(item)].filter(Boolean).join(' · ')}
+                  >
+                    <Avatar who={item.avatar} size={36} />
                     <div className="feed-item__text">
                       <strong>{item.title}</strong>
                       <span>{item.detail}</span>
                     </div>
+                    {timeAgo(item) && (
+                      <span className="feed-item__ago">
+                        {timeAgo(item)}
+                      </span>
+                    )}
                   </li>
                 ))}
               </ul>
               <div className="activity__side">
                 <div className="panel quick-actions" role="group" aria-label="Quick actions">
                   <div className="quick-actions__row">
-                    <a className="qa" href={project.gameUrl} target="_blank" rel="noreferrer">
+                    <a className="qa" href={project.gameUrl} target="_blank" rel="noreferrer" data-tip="Take a break" data-tip-detail="Opens a quick game in a new tab">
                       <span className="qa__game">
                         <img src={qaGame} alt="" />
                         <img className="qa__play" src={playTriangle} alt="" />
                       </span>
                       Game
                     </a>
-                    <button className="qa" onClick={startAddingTask}>
+                    <button className="qa" onClick={startAddingTask} data-tip="New task" data-tip-detail="Add a task to the checklist">
                       <Icon src={qaTask} width={18} />
                       Task
                     </button>
-                    <a className="qa" href={viewHref('analysis')}>
+                    <a className="qa" href={viewHref('analysis')} data-tip="Analysis" data-tip-detail="Reflection, stats and task line-up">
                       <Icon src={qaAnalysis} width={18} />
                       Analysis
                     </a>
-                    <button className="qa" onClick={exportProject}>
+                    <button className="qa" onClick={exportProject} data-tip="Export" data-tip-detail="Download this project as a JSON file">
                       <span className="qa__export">
                         <img src={qaExport} alt="" />
                       </span>
@@ -351,11 +386,11 @@ export default function ProjectScreen({ view = 'overview' }: { view?: ProjectVie
                 </div>
                 <div className="panel project-stats" role="group" aria-label="Project stats">
                   <div className="project-stats__rows">
-                    <div>
+                    <div data-tip="Your hours" data-tip-detail="Time you have logged on this project">
                       <span>Individual Work Hours</span>
                       <strong>{project.individualHours} hours</strong>
                     </div>
-                    <div>
+                    <div data-tip="Team hours" data-tip-detail="Time logged by the whole team">
                       <span>Team Work Hours</span>
                       <strong>{project.teamHours} hours</strong>
                     </div>
@@ -372,7 +407,7 @@ export default function ProjectScreen({ view = 'overview' }: { view?: ProjectVie
             <h2 className="card__title">Checklist</h2>
             <ul className="checklist__list">
               {visibleTasks.map((task) => (
-                <li key={task.id}>
+                <li key={task.id} className="task-row">
                   <button
                     className={`task ${task.done ? 'task--done' : ''}`}
                     onClick={() => toggleTask(task.id)}
@@ -381,6 +416,14 @@ export default function ProjectScreen({ view = 'overview' }: { view?: ProjectVie
                   >
                     {task.done ? <Icon src={checkOn} width={16} /> : <span className="task__box" />}
                     <span className="task__label">{task.label}</span>
+                  </button>
+                  <button
+                    className="task__delete"
+                    onClick={() => deleteTask(task.id)}
+                    aria-label={`Delete ${task.label}`}
+                    data-tip="Delete task"
+                  >
+                    <img src={trashIcon} alt="" width={16} height={16} />
                   </button>
                 </li>
               ))}
@@ -413,7 +456,8 @@ export default function ProjectScreen({ view = 'overview' }: { view?: ProjectVie
                   key={`day-${d}`}
                   className={`timeline__day ${d === submissionDay ? 'is-deadline' : ''}`}
                   style={{ left: trackPos(i, timelineDays.length) }}
-                  title={d === submissionDay ? 'Submission deadline' : undefined}
+                  data-tip={d === submissionDay ? 'Submission deadline' : undefined}
+                  data-tip-detail={d === submissionDay ? `Due on the ${d}th` : undefined}
                 >
                   {d}
                 </span>
@@ -425,7 +469,8 @@ export default function ProjectScreen({ view = 'overview' }: { view?: ProjectVie
                 <div
                   key={bar.name}
                   className="bar"
-                  title={`${bar.name} · ${bar.progress}%`}
+                  data-tip={bar.name}
+                  data-tip-detail={`${bar.progress}% complete`}
                   style={
                     {
                       top: bar.top,
@@ -445,7 +490,9 @@ export default function ProjectScreen({ view = 'overview' }: { view?: ProjectVie
                     {bar.avatars.length > 0 && (
                       <span className="bar__avatars" style={{ marginLeft: bar.avatarGap }}>
                         {bar.avatars.map((a) => (
-                          <Avatar key={a} who={a} size={18} />
+                          <span key={a} className="tip-target" data-tip={memberLabel(a)}>
+                            <Avatar who={a} size={18} />
+                          </span>
                         ))}
                       </span>
                     )}
@@ -468,18 +515,22 @@ export default function ProjectScreen({ view = 'overview' }: { view?: ProjectVie
             <ul className="team__list">
               {team.map((m) => (
                 <li key={m.id} className="member">
-                  <Avatar who={m.avatar} size={34} />
+                  <span className="tip-target" data-tip={m.name} data-tip-detail={m.role}>
+                    <Avatar who={m.avatar} size={34} />
+                  </span>
                   <div className="member__text">
                     <strong>{m.name}</strong>
                     <span>{m.role}</span>
                   </div>
-                  <span className={`status status--${m.status.toLowerCase()}`}>{m.status}</span>
+                  <span className={`status status--${m.status.toLowerCase()}`} data-tip={m.status} data-tip-detail={statusHints[m.status]}>
+                    {m.status}
+                  </span>
                 </li>
               ))}
             </ul>
             <div className="btn btn--wide btn--message" onClick={messaging ? undefined : () => setMessaging(true)}>
               <span className="btn__icon" style={{ width: 30, height: 30, borderRadius: 6 }}>
-                <Icon src={messageIcon} width={14} />
+                <img src={messageIcon} alt="" width={18} height={18} />
               </span>
               {messaging ? (
                 <input
@@ -585,7 +636,8 @@ export default function ProjectScreen({ view = 'overview' }: { view?: ProjectVie
               className={`standard__lock ${lockNudge ? 'is-nudging' : ''}`}
               onClick={nudgeLock}
               aria-label={`Locked, unlocks in ${project.daysTillSubmission} days`}
-              title={`Unlocks in ${project.daysTillSubmission} days`}
+              data-tip="Locked"
+              data-tip-detail={`Unlocks in ${project.daysTillSubmission} days, after submission`}
             >
               <Icon src={lockIcon} width={13} height={16.25} />
             </button>

@@ -4,6 +4,7 @@ import { project, type ActivityItem, type AvatarKey, type Task } from '../data/p
 import { reflectionColors, reflectionQuestions, taskMeta } from '../data/analysis'
 import arrowPrev from '../assets/figma/analysis/arrow-prev.svg'
 import arrowNext from '../assets/figma/analysis/arrow-next.svg'
+import { timeAgo } from '../utils/time'
 import './AnalysisView.css'
 
 type Props = {
@@ -202,12 +203,4 @@ function WorkItem({ task }: { task: Task }) {
 
 function plural(n: number, word: string) {
   return `${n} ${word}${n === 1 ? '' : 's'}`
-}
-
-function timeAgo(item: ActivityItem) {
-  if (!item.at) return item.ago
-  const mins = Math.max(1, Math.round((Date.now() - item.at) / 60000))
-  if (mins < 60) return `${mins}m`
-  const hours = Math.round(mins / 60)
-  return hours < 24 ? `${hours}h` : `${Math.round(hours / 24)}d`
 }

@@ -60,6 +60,13 @@
   outline-offset: 2px;
 }
 
+/* Wrapper that gives an avatar its own tooltip without changing layout. */
+.tip-target {
+  display: inline-flex;
+  line-height: 0;
+  border-radius: 999px;
+}
+
 .icon {
   display: grid;
   place-items: center;
@@ -204,10 +211,11 @@
 }
 
 .header {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 24px;
+  /* Same columns as the top row, so the search bar always lines up with the Activity card. */
+  display: grid;
+  grid-template-columns: var(--top-cols);
+  align-items: end;
+  column-gap: var(--card-gap);
   margin-bottom: var(--header-gap, 52px);
 }
 
@@ -236,8 +244,8 @@
 
 .search {
   box-sizing: border-box;
-  flex: 0 1 505px;
-  min-width: 240px;
+  width: 100%;
+  min-width: 0;
   height: 48px;
   padding: 7px 7px 6px;
   display: flex;
@@ -277,13 +285,25 @@
   filter: invert(0.5);
 }
 
+/*
+  On windows wider than 16:9 the layout grows sideways. That extra width goes partly into wider
+  gaps between cards and partly to Activity, so Dashboard Overview doesn't stretch the most.
+  At the 1920x1080 design size these resolve to Figma's 30px gap and 681 / 505 split.
+*/
+.header,
+.row {
+  --card-gap: clamp(30px, calc(30px + (100cqw - 1217px) * 0.1), 52px);
+  --top-cols: minmax(0, 1fr)
+    minmax(0, calc((100cqw - var(--card-gap)) * 0.4258 + max(0px, (100cqw - 1217px) * 0.25)));
+}
+
 .row {
   display: grid;
-  gap: var(--gap);
+  column-gap: var(--card-gap);
 }
 
 .row--top {
-  grid-template-columns: minmax(0, 681fr) minmax(0, 505fr);
+  grid-template-columns: var(--top-cols);
   margin-bottom: var(--gap);
 }
 
@@ -379,7 +399,7 @@
 .overview__stats {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 14px;
+  gap: clamp(14px, calc(14px + (100cqw - 1217px) * 0.03), 24px);
 }
 
 .stat {
@@ -515,11 +535,12 @@
 .feed-item {
   box-sizing: border-box;
   flex: 1;
+  container-type: inline-size;
   min-height: 64px;
   padding: 10px 12px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   border: 0.75px solid #333;
   border-radius: 10px;
   background: #262626;
@@ -534,6 +555,7 @@
 }
 
 .feed-item__text {
+  flex: 1;
   min-width: 0;
   display: flex;
   flex-direction: column;
@@ -555,6 +577,28 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.feed-item__ago {
+  align-self: flex-start;
+  flex-shrink: 0;
+  height: 22px;
+  padding: 0 7px;
+  display: grid;
+  place-items: center;
+  border-radius: 6px;
+  background: rgba(64, 64, 64, 0.6);
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0;
+  color: #bfbfbf;
+}
+
+/* The time tag only shows when the row has room for it (the tooltip always has the time). */
+@container (max-width: 239px) {
+  .feed-item__ago {
+    display: none;
+  }
 }
 
 .activity__side {
@@ -582,7 +626,7 @@
   min-height: 0;
   flex: 1;
   padding: 10px;
-  justify-content: center;
+  justify-content: stretch;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -591,13 +635,16 @@
 .quick-actions__row {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 4px;
+  flex: 1;
+  gap: 6px;
 }
 
 .qa {
   box-sizing: border-box;
-  height: 60px;
-  padding-top: 9px;
+  height: auto;
+  min-height: 60px;
+  padding-top: 0;
+  justify-content: center;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -606,7 +653,7 @@
   border-radius: 6px;
   background: rgba(64, 64, 64, 0.4);
   font-family: 'Gilroy', sans-serif;
-  font-size: 13px;
+  font-size: 14px;
   letter-spacing: 0;
   line-height: 16px;
   color: #d9d9d9;
@@ -716,6 +763,43 @@
 
 .checklist__list li:nth-child(-n + 2) .task {
   height: 46px;
+}
+
+.task-row {
+  position: relative;
+}
+
+.task__delete {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  opacity: 0;
+  transform: translateY(-50%);
+  transition: opacity 0.15s, background 0.15s;
+}
+
+.task__delete img {
+  display: block;
+}
+
+.task-row:hover .task__delete,
+.task__delete:focus-visible {
+  opacity: 1;
+}
+
+/* Make room for the bin only while it is showing. */
+.task-row:hover .task,
+.task-row:has(.task__delete:focus-visible) .task {
+  padding-right: 48px;
+}
+
+.task__delete:hover {
+  background: rgba(245, 87, 87, 0.14);
 }
 
 .task:hover {
@@ -1181,6 +1265,10 @@
     grid-template-columns: minmax(0, 1fr);
   }
 
+  .header {
+    grid-template-columns: minmax(0, 1fr) minmax(220px, 1fr);
+  }
+
   .row--bottom {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -1193,8 +1281,8 @@
 
 @container main (max-width: 620px) {
   .header {
-    flex-direction: column;
-    align-items: stretch;
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 16px;
   }
 
   .header__title h1 {
