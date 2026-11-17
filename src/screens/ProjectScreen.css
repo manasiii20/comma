@@ -122,7 +122,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--nav-gap, 4px);
+  gap: var(--nav-gap, 16px);
 }
 
 .nav-item {
@@ -214,9 +214,9 @@
   /* Same columns as the top row, so the search bar always lines up with the Activity card. */
   display: grid;
   grid-template-columns: var(--top-cols);
-  align-items: center;
+  align-items: end;
   column-gap: var(--card-gap);
-  margin-bottom: var(--header-gap, 52px);
+  margin-bottom: var(--header-gap, 44px);
 }
 
 .header__title {
@@ -306,6 +306,7 @@
 .row--top {
   grid-template-columns: var(--top-cols);
   margin-bottom: var(--card-gap);
+  min-height: var(--top-min, 318px);
 }
 
 .row--bottom {
@@ -399,6 +400,7 @@
 
 .overview__stats {
   display: grid;
+  flex: 1;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: clamp(14px, calc(14px + (100cqw - 1217px) * 0.03), 24px);
 }
@@ -521,7 +523,7 @@
 
 .activity__body {
   display: grid;
-  grid-template-columns: minmax(0, 190fr) minmax(0, 226fr);
+  grid-template-columns: minmax(0, 222fr) minmax(0, 194fr);
   align-items: stretch;
   flex: 1;
   gap: 10px;
@@ -538,12 +540,12 @@
   flex: 1;
   container-type: inline-size;
   min-height: 64px;
-  padding: 10px 11px;
+  padding: 0 14px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
   border: 0.75px solid #333;
-  border-radius: 10px;
+  border-radius: 16px;
   background: #262626;
   animation: feed-in 0.3s ease-out;
 }
@@ -565,9 +567,9 @@
 .feed-item__text strong {
   font-family: 'Gilroy', sans-serif;
   font-weight: 400;
-  font-size: 16px;
+  font-size: 17px;
   line-height: 22px;
-  color: #ccc;
+  color: #e6e6e6;
 }
 
 .feed-item__text span {
@@ -581,18 +583,19 @@
 }
 
 .feed-item__ago {
-  align-self: flex-start;
+  align-self: center;
   flex-shrink: 0;
-  height: 22px;
-  padding: 0 7px;
+  height: 26px;
+  padding: 1px 10px 0;
   display: grid;
   place-items: center;
-  border-radius: 6px;
-  background: rgba(64, 64, 64, 0.6);
-  font-size: 12px;
+  border-radius: 7px;
+  background: #2b2b2b;
+  box-shadow: inset 0 0 0 0.5px #3a3a3a;
+  font-size: 13px;
   line-height: 16px;
   letter-spacing: 0;
-  color: #bfbfbf;
+  color: #b3b3b3;
 }
 
 /* The time tag only shows when the row has room for it (the tooltip always has the time). */
@@ -740,7 +743,7 @@
 .checklist__list {
   flex: 1 1 0;
   min-height: 120px;
-  margin: 20px 0 24px;
+  margin: 16px 0 18px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
@@ -751,7 +754,7 @@
 .task {
   box-sizing: border-box;
   width: 100%;
-  height: 50px;
+  height: 46px;
   padding: 0 16px;
   display: flex;
   align-items: center;
@@ -764,7 +767,7 @@
 }
 
 .checklist__list li:nth-child(-n + 2) .task {
-  height: 50px;
+  height: 46px;
 }
 
 .task-row {
@@ -854,7 +857,7 @@
   position: relative;
   flex: 1;
   min-height: 232px;
-  margin-top: 21px;
+  margin-top: 13px;
 }
 
 .timeline__day {
@@ -883,7 +886,7 @@
   position: absolute;
   top: 35px;
   bottom: 0;
-  border-left: 0.3px solid rgba(106, 106, 106, 0.46);
+  border-left: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .bar {
@@ -942,13 +945,13 @@
 
 .timeline__legend {
   box-sizing: border-box;
-  margin-top: 22px;
+  margin-top: 16px;
   min-height: 0;
   padding: 10px 14px;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   column-gap: 16px;
-  row-gap: 8px;
+  row-gap: 6px;
   box-shadow: inset 0 0 0 0.75px #333;
   border-radius: 10px;
   background: #262626;
@@ -978,7 +981,7 @@
 /* Team */
 .team__list {
   flex: 1;
-  margin: 22px 0 30px;
+  margin: 18px 0 20px;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -986,7 +989,7 @@
 
 .member {
   box-sizing: border-box;
-  height: 90px;
+  height: 80px;
   padding: 0 14px;
   container-type: inline-size;
   display: flex;
@@ -1015,8 +1018,8 @@
 .member__text strong {
   font-family: 'Gilroy', sans-serif;
   font-weight: 400;
-  font-size: 17px;
-  line-height: 22px;
+  font-size: 18px;
+  line-height: 24px;
   color: #e6e6e6;
 }
 

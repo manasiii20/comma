@@ -320,7 +320,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: 12px;
   border-radius: 14px;
   background: #262626;
   box-shadow: inset 0 0 0 1px #343434;
@@ -412,7 +412,7 @@
 }
 
 .work-item__people > * + * {
-  margin-left: -8px;
+  margin-left: -10px;
 }
 
 /* ---------- Maylo's Health (profile panel) ---------- */

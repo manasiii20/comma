@@ -27,6 +27,7 @@ import { BreakToast, BreaksDialog } from '../components/MayloBreaks'
 import { breakLabel, type BreakSettings } from '../utils/breaks'
 import navFolder from '../assets/figma/nav-folder.svg?raw'
 import navUsers from '../assets/figma/nav-users.svg?raw'
+import navCalendar from '../assets/figma/nav-calendar.svg?raw'
 import navChart from '../assets/figma/nav-chart.svg?raw'
 import navLogout from '../assets/figma/nav-logout.svg?raw'
 import searchIcon from '../assets/figma/search.svg'
@@ -85,6 +86,7 @@ const navItems: { id: string; label: string; icon: string; w: number; h: number;
   { id: 'overview', label: 'Overview', icon: navBookPlain, w: 25, h: 22, view: 'overview' },
   { id: 'files', label: 'Files', icon: navFolder, w: 25, h: 21 },
   { id: 'team', label: 'Team', icon: navUsers, w: 24, h: 24 },
+  { id: 'calendar', label: 'Calendar', icon: navCalendar, w: 24, h: 26 },
   { id: 'analytics', label: 'Analytics', icon: navChart, w: 24, h: 24, view: 'analysis' },
 ]
 
@@ -274,6 +276,7 @@ export default function ProjectScreen({ view = 'overview' }: { view?: ProjectVie
         <header className="header">
           <div className="header__title">
             <h1>{project.name}</h1>
+            <p>{project.subtitle}</p>
           </div>
           <label className="search">
             <span className="search__icon">
@@ -364,7 +367,7 @@ export default function ProjectScreen({ view = 'overview' }: { view?: ProjectVie
                     data-tip={item.title}
                     data-tip-detail={[item.detail, timeAgoLong(item)].filter(Boolean).join(' · ')}
                   >
-                    <Avatar who={item.avatar} size={32} />
+                    <Avatar who={item.avatar} size={40} />
                     <div className="feed-item__text">
                       <strong>{item.title}</strong>
                       <span>{item.detail}</span>
@@ -580,6 +583,7 @@ export default function ProjectScreen({ view = 'overview' }: { view?: ProjectVie
           <img className="profile__avatar" src={avatarAanya} alt="" />
           <div className="profile__id">
             <h2>{user.name}</h2>
+            <p>{user.email}</p>
           </div>
         </div>
         {view === 'analysis' ? (
