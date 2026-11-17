@@ -27,7 +27,6 @@ import { BreakToast, BreaksDialog } from '../components/MayloBreaks'
 import { breakLabel, type BreakSettings } from '../utils/breaks'
 import navFolder from '../assets/figma/nav-folder.svg?raw'
 import navUsers from '../assets/figma/nav-users.svg?raw'
-import navCalendar from '../assets/figma/nav-calendar.svg?raw'
 import navChart from '../assets/figma/nav-chart.svg?raw'
 import navLogout from '../assets/figma/nav-logout.svg?raw'
 import searchIcon from '../assets/figma/search.svg'
@@ -61,14 +60,13 @@ const timelineBars: {
   track: string
   fill: string
   pill: string
-  pillWidth: number
   avatarGap: number
   avatars: AvatarKey[]
 }[] = [
-  { name: 'Problem Framing', progress: 100, designLeft: 43, designWidth: 114, designFill: 114, top: 41, track: 'rgba(100,196,226,0.88)', fill: 'rgba(100,196,226,0.88)', pill: '#b2e3f3', pillWidth: 33, avatarGap: 14, avatars: ['shreya', 'aanya'] },
-  { name: 'Research Models', progress: 95, designLeft: 141, designWidth: 134, designFill: 117, top: 93, track: 'rgba(229,195,249,0.54)', fill: 'rgba(229,195,249,0.81)', pill: '#f8edfe', pillWidth: 33, avatarGap: 23, avatars: ['shreya', 'krisha'] },
-  { name: 'Solution Ideation', progress: 65, designLeft: 228, designWidth: 118, designFill: 80, top: 145, track: 'rgba(241,165,165,0.62)', fill: 'rgba(241,165,165,0.88)', pill: '#ffdbdb', pillWidth: 33, avatarGap: 7, avatars: ['dhruv'] },
-  { name: 'Prototyping', progress: 15, designLeft: 322, designWidth: 91, designFill: 38, top: 197, track: 'rgba(249,243,151,0.6)', fill: '#efea92', pill: '#fffcca', pillWidth: 25, avatarGap: 0, avatars: [] },
+  { name: 'Problem Framing', progress: 100, designLeft: 43, designWidth: 114, designFill: 114, top: 41, track: 'rgba(100,196,226,0.88)', fill: 'rgba(100,196,226,0.88)', pill: '#b2e3f3', avatarGap: 14, avatars: ['shreya', 'aanya'] },
+  { name: 'Research Models', progress: 95, designLeft: 141, designWidth: 134, designFill: 117, top: 93, track: 'rgba(229,195,249,0.54)', fill: 'rgba(229,195,249,0.81)', pill: '#f8edfe', avatarGap: 23, avatars: ['shreya', 'krisha'] },
+  { name: 'Solution Ideation', progress: 65, designLeft: 228, designWidth: 118, designFill: 80, top: 145, track: 'rgba(241,165,165,0.62)', fill: 'rgba(241,165,165,0.88)', pill: '#ffdbdb', avatarGap: 7, avatars: ['dhruv'] },
+  { name: 'Prototyping', progress: 15, designLeft: 322, designWidth: 91, designFill: 38, top: 197, track: 'rgba(249,243,151,0.6)', fill: '#efea92', pill: '#fffcca', avatarGap: 0, avatars: [] },
 ]
 
 const legend = [
@@ -87,7 +85,6 @@ const navItems: { id: string; label: string; icon: string; w: number; h: number;
   { id: 'overview', label: 'Overview', icon: navBookPlain, w: 25, h: 22, view: 'overview' },
   { id: 'files', label: 'Files', icon: navFolder, w: 25, h: 21 },
   { id: 'team', label: 'Team', icon: navUsers, w: 24, h: 24 },
-  { id: 'calendar', label: 'Calendar', icon: navCalendar, w: 24, h: 26 },
   { id: 'analytics', label: 'Analytics', icon: navChart, w: 24, h: 24, view: 'analysis' },
 ]
 
@@ -277,7 +274,6 @@ export default function ProjectScreen({ view = 'overview' }: { view?: ProjectVie
         <header className="header">
           <div className="header__title">
             <h1>{project.name}</h1>
-            <p>{project.subtitle}</p>
           </div>
           <label className="search">
             <span className="search__icon">
@@ -368,7 +364,7 @@ export default function ProjectScreen({ view = 'overview' }: { view?: ProjectVie
                     data-tip={item.title}
                     data-tip-detail={[item.detail, timeAgoLong(item)].filter(Boolean).join(' · ')}
                   >
-                    <Avatar who={item.avatar} size={36} />
+                    <Avatar who={item.avatar} size={32} />
                     <div className="feed-item__text">
                       <strong>{item.title}</strong>
                       <span>{item.detail}</span>
@@ -507,14 +503,14 @@ export default function ProjectScreen({ view = 'overview' }: { view?: ProjectVie
                     className={`bar__fill ${bar.progress === 15 ? 'bar__fill--small' : ''}`}
                     style={{ width: `${(bar.designFill / bar.designWidth) * 100}%`, background: bar.fill }}
                   >
-                    <span className="bar__pill" style={{ background: bar.pill, width: bar.pillWidth }}>
+                    <span className="bar__pill" style={{ background: bar.pill }}>
                       {bar.progress}%
                     </span>
                     {bar.avatars.length > 0 && (
                       <span className="bar__avatars" style={{ marginLeft: bar.avatarGap }}>
                         {bar.avatars.map((a) => (
                           <span key={a} className="tip-target" data-tip={memberLabel(a)}>
-                            <Avatar who={a} size={18} />
+                            <Avatar who={a} size={22} />
                           </span>
                         ))}
                       </span>
@@ -539,7 +535,7 @@ export default function ProjectScreen({ view = 'overview' }: { view?: ProjectVie
               {team.map((m) => (
                 <li key={m.id} className="member">
                   <span className="tip-target" data-tip={m.name} data-tip-detail={m.role}>
-                    <Avatar who={m.avatar} size={34} />
+                    <Avatar who={m.avatar} size={44} />
                   </span>
                   <div className="member__text">
                     <strong>{m.name}</strong>
@@ -584,14 +580,12 @@ export default function ProjectScreen({ view = 'overview' }: { view?: ProjectVie
           <img className="profile__avatar" src={avatarAanya} alt="" />
           <div className="profile__id">
             <h2>{user.name}</h2>
-            <p>{user.email}</p>
           </div>
         </div>
         {view === 'analysis' ? (
           <section className="side-card maylo">
             <div className="side-card__heading">
               <h3>Maylo’s Health</h3>
-              <p>Representative of your work health</p>
             </div>
             <div className="maylo__body">
               <div className="maylo__pal">
@@ -630,7 +624,6 @@ export default function ProjectScreen({ view = 'overview' }: { view?: ProjectVie
         <section className="side-card pal">
           <div className="side-card__heading">
             <h3>Make Your Own Pal</h3>
-            <p>Your friend at every stage</p>
           </div>
           <div className="pal__image">
             <img src={palImage} alt={palName ? `${palName} the pal` : 'Your pal'} />
@@ -652,7 +645,6 @@ export default function ProjectScreen({ view = 'overview' }: { view?: ProjectVie
         <section className="side-card standard">
           <div className="side-card__heading">
             <h3>Set Your Standard</h3>
-            <p>Unlocks in {project.daysTillSubmission} days</p>
           </div>
           <div className="standard__locked">
             <p>

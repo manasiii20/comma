@@ -417,7 +417,7 @@
 
 /* ---------- Maylo's Health (profile panel) ---------- */
 .side-card.maylo {
-  min-height: 327px;
+  min-height: 311px;
   padding: 26px 25px 30px;
 }
 
@@ -433,8 +433,8 @@
 
 .maylo__pal {
   position: relative;
-  width: 129px;
-  height: 129px;
+  width: 145px;
+  height: 145px;
   flex-shrink: 0;
   overflow: hidden;
   border-radius: 10px;
@@ -443,8 +443,8 @@
 
 .maylo__pal span {
   position: absolute;
-  left: 20.22px;
-  top: 16.18px;
+  left: 28.75px;
+  top: 24.77px;
   width: 87.5px;
   height: 95.46px;
   overflow: hidden;
@@ -463,9 +463,9 @@
 .maylo__stats {
   box-sizing: border-box;
   flex: 1;
-  height: 129px;
+  height: 145px;
   margin: 0;
-  padding: 9px 14px;
+  padding: 12px 16px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
